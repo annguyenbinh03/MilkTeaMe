@@ -17,7 +17,7 @@ namespace MilkTeaMe.Repositories.UnitOfWork
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }
         IGenericRepository<PaymentMethod> PaymentMethodRepository { get; }
-        IGenericRepository<Product> ProductRepository { get; }
+        IProductRepository ProductRepository { get; }
         IGenericRepository<ProductCombo> ProductComboRepository { get; }
         IGenericRepository<ProductSize> ProductSizeRepository { get; }
         IGenericRepository<Size> SizeRepository { get; }

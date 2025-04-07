@@ -1,3 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using MilkTeaMe.Repositories.DbContexts;
+using MilkTeaMe.Repositories.Implementations;
+using MilkTeaMe.Repositories.UnitOfWork;
+using MilkTeaMe.Services.Implementations;
+using MilkTeaMe.Services.Interfaces;
+
 namespace MilkTeaMe.Web
 {
     public class Program
@@ -6,10 +13,18 @@ namespace MilkTeaMe.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+			// Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+			builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
+				 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+			builder.Services.AddScoped(typeof(GenericRepository<>));
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+			builder.Services.AddScoped<IProductService, ProductService>();
+			builder.Services.AddScoped<CloudinaryService>();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -28,7 +43,7 @@ namespace MilkTeaMe.Web
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=MilkTeas}/{action=Index}/{id?}");
 
             app.Run();
         }
