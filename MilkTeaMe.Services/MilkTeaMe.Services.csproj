@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MilkTeaMe.Services\MilkTeaMe.Services.csproj" />
+    <ProjectReference Include="..\MilkTeaMe.Repositories\MilkTeaMe.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

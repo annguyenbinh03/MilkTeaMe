@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MilkTeaMe.Web", "MilkTeaMe.Web\MilkTeaMe.Web.csproj", "{A2404F2E-7101-49F1-89FD-D9E7ED3905E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MilkTeaMe.Web", "MilkTeaMe.Web\MilkTeaMe.Web.csproj", "{A2404F2E-7101-49F1-89FD-D9E7ED3905E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MilkTeaMe.Services", "MilkTeaMe.Services\MilkTeaMe.Services.csproj", "{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MilkTeaMe.Repositories", "MilkTeaMe.Repositories\MilkTeaMe.Repositories.csproj", "{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{A2404F2E-7101-49F1-89FD-D9E7ED3905E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2404F2E-7101-49F1-89FD-D9E7ED3905E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2404F2E-7101-49F1-89FD-D9E7ED3905E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
