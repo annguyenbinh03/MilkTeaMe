@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Services.Interfaces;
 
-namespace MilkTeaMe.Web.Controllers
+namespace MilkTeaMe.Web.Controllers.Manager
 {
-    [Route("api/dashboard")]
-    public class DashboardController : Controller
+	[Route("api/dashboard")]
+	public class DashboardController : Controller
     {
         private readonly IDashboardService _dashboardService;
 
@@ -17,7 +17,7 @@ namespace MilkTeaMe.Web.Controllers
             var dailyRevenue = await _dashboardService.GetTotalRevenueByDay();
             var monthlyRevenue = await _dashboardService.GetTotalRevenueByMonth();
             var yearlyRevenue = await _dashboardService.GetTotalRevenueByYear();
-			var products = await _dashboardService.GetHighLightProduct();
+            var products = await _dashboardService.GetHighLightProduct();
 
             ViewBag.DailyRevenue = dailyRevenue;
             ViewBag.MonthyRevenue = monthlyRevenue;

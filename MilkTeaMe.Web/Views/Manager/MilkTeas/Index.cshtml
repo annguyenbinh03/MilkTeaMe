@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     ViewData["HeaderTitle"] = "Quản lý trà sữa";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+	Layout = "~/Views/Shared/_ManagerLayout.cshtml";
     int totalPages = (int)Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize);
     int currentPage = ViewBag.CurrentPage;
     string search = ViewBag.Search ?? "";

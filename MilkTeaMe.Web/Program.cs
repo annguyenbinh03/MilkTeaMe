@@ -4,6 +4,7 @@ using MilkTeaMe.Repositories.Implementations;
 using MilkTeaMe.Repositories.UnitOfWork;
 using MilkTeaMe.Services.Implementations;
 using MilkTeaMe.Services.Interfaces;
+using MilkTeaMe.Web.Infrastructure.ViewLocationExpanders;
 
 namespace MilkTeaMe.Web
 {
@@ -14,7 +15,9 @@ namespace MilkTeaMe.Web
             var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddRazorOptions(options =>{
+				options.ViewLocationExpanders.Add(new ManagerViewLocationExpander());
+			});
 
 			builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
 				 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -42,13 +45,28 @@ namespace MilkTeaMe.Web
 
             app.UseRouting();
 
-            app.UseAuthorization();
+			app.Use(async (context, next) =>
+			{
+				var routeData = context.GetRouteData();
+				if (routeData != null)
+				{
+					Console.WriteLine($"Controller: {routeData.Values["controller"]}, Action: {routeData.Values["action"]}");
+				}
+				await next();
+			});
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=MilkTeas}/{action=Index}/{id?}");
 
-            app.Run();
+			app.UseAuthorization();
+
+			app.MapControllerRoute(
+				name: "Manager",
+				pattern: "Manager/{controller=Dashboard}/{action=Index}");
+
+			app.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			app.Run();
         }
     }
 }
