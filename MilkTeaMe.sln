@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MilkTeaMe.Web", "MilkTeaMe.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MilkTeaMe.Services", "MilkTeaMe.Services\MilkTeaMe.Services.csproj", "{AD2D36B1-A95B-4AF4-BE39-36A7C25DA63A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MilkTeaMe.Repositories", "MilkTeaMe.Repositories\MilkTeaMe.Repositories.csproj", "{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MilkTeaMe.Repositories", "MilkTeaMe.Repositories\MilkTeaMe.Repositories.csproj", "{12519E1C-9C9E-4CFA-AC92-DDAA847A9DCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

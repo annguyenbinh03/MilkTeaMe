@@ -28,9 +28,17 @@ namespace MilkTeaMe.Web
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 			builder.Services.AddScoped<IOrderService, OrderService>();
 			builder.Services.AddScoped<IDashboardService, DashboardService>();
+			builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<CloudinaryService>();
 
-			var app = builder.Build();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -64,7 +72,7 @@ namespace MilkTeaMe.Web
 
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{controller=Auth}/{action=Login}");
 
 			app.Run();
         }
