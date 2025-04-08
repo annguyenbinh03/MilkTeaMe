@@ -1,0 +1,106 @@
+﻿@model IEnumerable<MilkTeaMe.Repositories.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["HeaderTitle"] = "Orders";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+   int totalPages = (int)Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize);
+	int currentPage = ViewBag.CurrentPage;
+	string search = ViewBag.Search ?? "";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                Order Details
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                    @(((int)item.TotalPrice).ToString("N0")) VND
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                    @foreach (var orderDetail in item.OrderDetails)
+                    {
+                    <div class="border p-1 m-1">
+                            <img src="@orderDetail.Product.ImageUrl" width="50" />
+                            Product: @orderDetail.Product.Name
+                                (@orderDetail.Quantity)
+                            @if (orderDetail.Size != null)
+                            {
+                                @: ( Size: @orderDetail.Size.Name )
+                            }
+                            @(((int)orderDetail.Price).ToString("N0")) VND
+                     </div>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<div class="pagination justify-content-center">
+	@if (totalPages > 1)
+	{
+		<ul class="pagination">
+			@if (currentPage > 1)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action("Index", new { page = 1, search})">First</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1})">Previous</a>
+				</li>
+			}
+
+			@for (int i = 1; i <= totalPages; i++)
+			{
+				<li class="page-item @(i == currentPage ? "active" : "")">
+					<a class="page-link" href="@Url.Action("Index", new { page = i,  search})">@i</a>
+				</li>
+			}
+
+			@if (currentPage < totalPages)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1,  search})">Next</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="@Url.Action("Index", new { page = totalPages,  search})">Last</a>
+				</li>
+			}
+		</ul>
+	}
+</div>
