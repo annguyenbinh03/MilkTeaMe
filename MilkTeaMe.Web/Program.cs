@@ -22,6 +22,7 @@ namespace MilkTeaMe.Web
 			builder.Services.AddScoped(typeof(GenericRepository<>));
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IProductService, ProductService>();
+			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 			builder.Services.AddScoped<CloudinaryService>();
 
 			var app = builder.Build();
