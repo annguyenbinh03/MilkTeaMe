@@ -1,0 +1,43 @@
+﻿using MilkTeaMe.Repositories.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MilkTeaMe.Services.BusinessObjects
+{
+    public class ToppingModel
+    {
+		public int Id { get; set; }
+
+		public string Name { get; set; } = string.Empty;
+
+		public string Description { get; set; } = string.Empty;
+
+		public string ImageUrl { get; set; } = string.Empty;
+
+		public string Status { get; set; } = string.Empty;
+
+		public DateTime? CreatedAt { get; set; }
+
+		public DateTime? UpdatedAt { get; set; }
+		public decimal Price { get; set; }
+		public Product? ToProduct()
+		{
+			if (this == null) return null;
+
+			return new Product
+			{
+				Id = Id,
+				Name = Name,
+				Description = Description,
+				Price = Price,
+				ImageUrl = ImageUrl,
+				Status = Status,
+				CreatedAt = CreatedAt,
+				UpdatedAt = UpdatedAt
+			};
+		}
+	}
+}

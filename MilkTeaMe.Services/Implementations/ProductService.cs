@@ -156,6 +156,88 @@ namespace MilkTeaMe.Services.Implementations
 
 		}
 
+		public async Task<(IEnumerable<Product>, int)> GetToppings(string? search, int? page = null, int? pageSize = null)
+		{
+			var (products, totalItems) = await _unitOfWork.ProductRepository.GetToppings(search, page, pageSize);
+			return (products.ToList(), totalItems);
+		}
+
+		public async Task<Product?> GetTopping(int id)
+		{
+			var product = await _unitOfWork.ProductRepository.GetTopping(id);
+			if (product == null)
+				return null;
+
+			return product;
+		}
+
+		public async Task CreateTopping(ToppingModel model)
+		{
+			Product? product = model.ToProduct();
+			product.CategoryId = 3;
+			product.Status = ProductStatus.active.ToString();
+			product.CreatedAt = TimeZoneUtil.GetCurrentTime();
+			product.UpdatedAt = TimeZoneUtil.GetCurrentTime();
+
+			if (product == null)
+			{
+				throw new Exception("Can not parse product");
+			}
+			try
+			{
+				await _unitOfWork.ProductRepository.InsertAsync(product);
+				await _unitOfWork.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task UpdateTopping(ToppingModel model)
+		{
+			Product? product = await _unitOfWork.ProductRepository.GetByIdAsync(model.Id);
+
+			if (product == null) return;
+
+			product.UpdatedAt = TimeZoneUtil.GetCurrentTime();
+
+			if (product.Name != model.Name)
+			{
+				product.Name = model.Name;
+			}
+
+			if (product.Description != model.Description)
+			{
+				product.Description = model.Description;
+			}
+
+			if (product.ImageUrl != model.ImageUrl && !string.IsNullOrEmpty(model.ImageUrl))
+			{
+				product.ImageUrl = model.ImageUrl;
+			}
+
+			if (product.Price != model.Price)
+			{
+				product.Price = model.Price;
+			}
+
+			if (product == null)
+			{
+				throw new Exception("Can not parse product");
+			}
+			try
+			{
+				_unitOfWork.ProductRepository.Update(product);
+
+				await _unitOfWork.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
 		public async Task Delete(int id)
 		{
 			Product? product = await _unitOfWork.ProductRepository.GetByIdAsync(id);

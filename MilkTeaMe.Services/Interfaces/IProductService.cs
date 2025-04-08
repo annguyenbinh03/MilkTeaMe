@@ -14,6 +14,10 @@ namespace MilkTeaMe.Services.Interfaces
 		Task<MilkTeaModel?> GetMilkTea(int id);
 		Task CreateMilkTea(MilkTeaModel model);
 		Task UpdateMilkTea(MilkTeaModel model);
+		Task<(IEnumerable<Product>, int)> GetToppings(string? search, int? page = null, int? pageSize = null);
+		Task<Product?> GetTopping(int id);
+		Task CreateTopping(ToppingModel model);
+		Task UpdateTopping(ToppingModel model);
 		Task Delete(int id);
 		Task Active(int id);
 	}
