@@ -18,6 +18,9 @@ namespace MilkTeaMe.Services.Interfaces
 		Task<Product?> GetTopping(int id);
 		Task CreateTopping(ToppingModel model);
 		Task UpdateTopping(ToppingModel model);
+		Task<(IEnumerable<ComboModel>, int)> GetCombos(string? search, int? page = null, int? pageSize = null);
+		Task<Product?> GetCombo(int id);
+		Task CreateCombo(ComboModel model);
 		Task Delete(int id);
 		Task Active(int id);
 	}

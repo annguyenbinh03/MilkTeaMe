@@ -74,7 +74,7 @@ namespace MilkTeaMe.Web.Controllers
 			{
 				Name = request.Name,
 				Description = request.Description,
-				ImageUrl = imageUrl,
+				ImageUrl = imageUrl ?? "",
 				Price = request.Price
 			};
 

@@ -13,5 +13,7 @@ namespace MilkTeaMe.Repositories.Interfaces
 		Task<Product?> GetMilkTea(int id);
 		Task<(IEnumerable<Product>, int)> GetToppings(string? search, int? page = null, int? pageSize = null);
 		Task<Product?> GetTopping(int id);
+		Task<(IEnumerable<Product>, int)> GetCombos(string? search, int? page = null, int? pageSize = null);
+		Task<Product?> GetCombo(int id);
 	}
 }

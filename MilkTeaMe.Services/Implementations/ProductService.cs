@@ -174,10 +174,6 @@ namespace MilkTeaMe.Services.Implementations
 		public async Task CreateTopping(ToppingModel model)
 		{
 			Product? product = model.ToProduct();
-			product.CategoryId = 3;
-			product.Status = ProductStatus.active.ToString();
-			product.CreatedAt = TimeZoneUtil.GetCurrentTime();
-			product.UpdatedAt = TimeZoneUtil.GetCurrentTime();
 
 			if (product == null)
 			{
@@ -185,6 +181,10 @@ namespace MilkTeaMe.Services.Implementations
 			}
 			try
 			{
+				product.Status = ProductStatus.active.ToString();
+				product.CreatedAt = TimeZoneUtil.GetCurrentTime();
+				product.UpdatedAt = TimeZoneUtil.GetCurrentTime();
+
 				await _unitOfWork.ProductRepository.InsertAsync(product);
 				await _unitOfWork.SaveChangesAsync();
 			}
@@ -230,6 +230,119 @@ namespace MilkTeaMe.Services.Implementations
 			{
 				_unitOfWork.ProductRepository.Update(product);
 
+				await _unitOfWork.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task<(IEnumerable<ComboModel>, int)> GetCombos(string? search, int? page = null, int? pageSize = null)
+		{
+			var (products, totalItems) = await _unitOfWork.ProductRepository.GetCombos(search, page, pageSize);
+			List<ComboModel> comboModels = new List<ComboModel>();
+			foreach (var combo in products)
+			{
+				var comboModel = new ComboModel
+				{
+					Id = combo.Id,
+					Name = combo.Name,
+					Description = combo.Description,
+					Price = combo.Price,
+					ImageUrl = combo.ImageUrl,
+					SoldCount = combo.SoldCount,
+					Status = combo.Status,
+					UpdatedAt = combo.UpdatedAt,
+					Products = new List<ProductInCombo>()
+				};
+
+				foreach (var productCombo in combo.ProductComboCombos)
+				{
+					var product = await _unitOfWork.ProductRepository.GetByIdAsync(productCombo.ProductId);
+					if (product != null)
+					{
+						var productComboModel = new ProductInCombo
+						{
+							Id = product.Id,
+							Name = product.Name,
+							Quantity = productCombo.Quantity,
+							ImageUrl = product.ImageUrl,
+							Price = product.Price,
+						};
+
+						if (productCombo.ProductSizeId.HasValue)
+						{
+							var productSize = await _unitOfWork.ProductSizeRepository.GetByIdAsync(productCombo.ProductSizeId, includes: ps => ps.Size);
+
+							if(productSize != null)
+							{
+								productComboModel.Size = productSize.Size.Name.ToString();
+								comboModel.Products.Add(productComboModel);
+							}
+						}
+					}
+				}
+
+				comboModels.Add(comboModel);
+			}
+			return (comboModels, totalItems);
+		}
+
+		public async Task<Product?> GetCombo(int id)
+		{
+			var product = await _unitOfWork.ProductRepository.GetCombo(id);
+			if (product == null)
+				return null;
+
+			return product;
+		}
+
+		public async Task CreateCombo(ComboModel model)
+		{
+			Product? product = new Product();
+			product.Id = model.Id;
+			product.Name = model.Name;
+			product.Description = model.Description;
+			product.Price = model.Price;
+			product.ImageUrl = model.ImageUrl;
+			product.CategoryId = 2;
+			product.Status = ProductStatus.active.ToString();
+			product.CreatedAt = TimeZoneUtil.GetCurrentTime();
+			product.UpdatedAt = TimeZoneUtil.GetCurrentTime();
+
+			if (product == null)
+			{
+				throw new Exception("Can not parse product");
+			}
+			try
+			{
+				await _unitOfWork.ProductRepository.InsertAsync(product);
+
+				foreach (ProductInCombo item in model.Products)
+				{
+					ProductCombo combo = new ProductCombo();
+					combo.ProductId = item.Id;
+					combo.Quantity = item.Quantity;
+					combo.Combo = product;
+
+					if (!string.IsNullOrEmpty(item.Size))
+					{
+						ProductSizeEnum sizeEnum = (ProductSizeEnum)Enum.Parse(typeof(ProductSizeEnum), item.Size);
+						int sizeValue = (int)sizeEnum;
+						ProductSize? productSize = await _unitOfWork.ProductSizeRepository.FindOneAsync(filter: ps => ps.ProductId == item.Id && ps.SizeId == sizeValue);
+						if (productSize == null) {
+							throw new Exception($"Can not find product with size {combo.ProductId} - {item.Size}");
+						}
+						combo.ProductSizeId = productSize.Id;
+					}
+					else
+					{
+						combo.ProductSizeId = null;
+						combo.ProductSize = null;
+					}
+					await _unitOfWork.ProductComboRepository.InsertAsync(combo);
+				}
 				await _unitOfWork.SaveChangesAsync();
 			}
 			catch (Exception ex)

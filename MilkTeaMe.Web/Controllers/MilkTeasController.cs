@@ -34,7 +34,7 @@ namespace MilkTeaMe.Web.Controllers
 		}
 
 		// GET: MilkTeas/Create
-		public async Task<IActionResult> Create()
+		public IActionResult Create()
 		{
 			return View();
 		}
@@ -67,7 +67,7 @@ namespace MilkTeaMe.Web.Controllers
 			{
 				Name = request.Name,
 				Description = request.Description,
-				ImageUrl = imageUrl,
+				ImageUrl = imageUrl ?? "",
 				PriceSizeS = request.PriceSizeS,
 				PriceSizeM = request.PriceSizeM,
 				PriceSizeL = request.PriceSizeL

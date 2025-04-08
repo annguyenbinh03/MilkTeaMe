@@ -9,10 +9,10 @@ namespace MilkTeaMe.Web.Models.Requests
 		[DisplayName("Tên sản phẩm")]
 		[Required(ErrorMessage = "Phải nhập tên sản phẩm")]
 		[StringLength(255, MinimumLength = 3, ErrorMessage = "Tên sản phẩm phải dài hơn 3 kí tự và bé hơn 255 ký tự")]
-		public string Name { get; set; }
+		public string Name { get; set; } = string.Empty;
 		[DisplayName("Mô tả của sản phẩm")]
 		[Required(ErrorMessage = "Phải nhập mô tả sản phẩm")]
-		public string Description { get; set; }
+		public string Description { get; set; } = string.Empty;
 		[DisplayName("Giá cho topping")]
 		[Required(ErrorMessage = "Phải nhập giá sản phẩm")]
 		[DataType(DataType.Currency)]
