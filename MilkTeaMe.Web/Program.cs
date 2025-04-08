@@ -24,7 +24,8 @@ namespace MilkTeaMe.Web
 			builder.Services.AddScoped<IProductService, ProductService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 			builder.Services.AddScoped<IOrderService, OrderService>();
-			builder.Services.AddScoped<CloudinaryService>();
+			builder.Services.AddScoped<IDashboardService, DashboardService>();
+            builder.Services.AddScoped<CloudinaryService>();
 
 			var app = builder.Build();
 
