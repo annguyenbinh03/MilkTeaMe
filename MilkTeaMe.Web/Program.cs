@@ -17,7 +17,8 @@ namespace MilkTeaMe.Web
 			// Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorOptions(options =>{
 				options.ViewLocationExpanders.Add(new ManagerViewLocationExpander());
-			});
+				options.ViewLocationExpanders.Add(new CustomerViewLocationExpander()); 
+            });
 
 			builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
 				 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -53,17 +54,6 @@ namespace MilkTeaMe.Web
 
             app.UseRouting();
 
-			app.Use(async (context, next) =>
-			{
-				var routeData = context.GetRouteData();
-				if (routeData != null)
-				{
-					Console.WriteLine($"Controller: {routeData.Values["controller"]}, Action: {routeData.Values["action"]}");
-				}
-				await next();
-			});
-
-
 			app.UseAuthorization();
 
 			app.MapControllerRoute(
@@ -72,7 +62,7 @@ namespace MilkTeaMe.Web
 
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Auth}/{action=Login}");
+				pattern: "{controller=Home}/{action=Index}");
 
 			app.Run();
         }
