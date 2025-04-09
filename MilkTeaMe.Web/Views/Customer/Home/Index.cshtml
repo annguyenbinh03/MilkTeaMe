@@ -96,10 +96,10 @@
                                             }
                                         </div>
                                     </div>
-                                    <button class="btn btn-success mt-3"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
+                                    <button class="btn btn-success mt-3" onclick="addToCart(@item.Id)"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
                                 </div>
                             </div>
-                        </div>
+                        </div>  
                     </div>
                 </div>
             </div>
@@ -125,11 +125,40 @@
             });
             document.getElementById(`label_${selectedId}`).classList.add("active");
         }
-
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll('[type="radio"]:checked').forEach(r => {
                 r.dispatchEvent(new Event('change'));
             });
         });
+
+        function addToCart(productId){
+            const quantity = parseInt(document.getElementById(`quantity_${productId}`).value);
+            const sizeInput = document.querySelector(`input[name="size_${productId}"]:checked`);
+            const size = sizeInput ? sizeInput.value : 'S';
+
+            const toppingCheckboxes = document.querySelectorAll(`input[name="toppings_${productId}"]:checked`);
+            const toppings = Array.from(toppingCheckboxes).map(cb => parseInt(cb.value));
+
+            const cartItem = {
+                productId,
+                size,
+                quantity,
+                toppings
+            };
+
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cartItem)
+            }).then(res => {
+                if (res.ok) {
+                    alert("Đã thêm vào giỏ hàng!");
+                } else {
+                    alert("Thêm giỏ hàng thất bại!");
+                }
+            });
+        }
     </script>
 }

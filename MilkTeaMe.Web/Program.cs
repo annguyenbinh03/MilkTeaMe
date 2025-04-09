@@ -54,7 +54,9 @@ namespace MilkTeaMe.Web
 
             app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseSession();
+
+            app.UseAuthorization();
 
 			app.MapControllerRoute(
 				name: "Manager",
