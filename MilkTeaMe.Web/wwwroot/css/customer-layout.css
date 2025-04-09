@@ -5,7 +5,6 @@
 .card-text {
     font-size: 0.95rem;
     line-height: 1.4;
-    height: 3.8em;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -15,6 +14,7 @@
 }
 
 .size-option {
+    user-select: none;
     background-color: #fff8dc;
     border: 1px solid #ffc107;
     border-radius: 2px;
@@ -41,4 +41,25 @@
     box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
     transform: scale(1.02);
     font-weight: 600;
+}
+
+.form-check-label {
+    user-select: none;
+}
+
+.form-check-input:checked {
+    background-color: #198754; 
+    border-color: #198754;
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.description-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

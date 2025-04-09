@@ -20,6 +20,9 @@ namespace MilkTeaMe.Web.Controllers.Customer
         public async Task<IActionResult> Index()
         {
             var (products, totalItems) = await _productService.GetMilkTeas(null, null, null);
+            var (toppings, totalTopping) = await _productService.GetToppings(null, null, null); 
+
+            ViewBag.Toppings = toppings;
             return View(products);
         }
     }

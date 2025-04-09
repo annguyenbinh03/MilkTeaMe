@@ -376,5 +376,10 @@ namespace MilkTeaMe.Services.Implementations
 
 			await _unitOfWork.SaveChangesAsync();
 		}
-	}
+
+        public async Task<Product?> GetProduct(int id)
+        {
+            return await _unitOfWork.ProductRepository.GetByIdAsync(id);
+        }
+    }
 }

@@ -10,6 +10,7 @@ namespace MilkTeaMe.Services.Interfaces
 {
     public interface IProductService
     {
+        Task<Product?> GetProduct(int id);
         Task<(IEnumerable<Product>, int)> GetMilkTeas(string? search, int? page = null, int? pageSize = null);
 		Task<MilkTeaModel?> GetMilkTea(int id);
 		Task CreateMilkTea(MilkTeaModel model);
