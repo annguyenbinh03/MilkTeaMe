@@ -137,12 +137,12 @@ INSERT INTO Size (Name) VALUES ('S'), ('M'), ('L');
 -- Thêm dữ liệu mẫu vào bảng Product
 INSERT INTO Product (Name, Description, Price, CategoryId, ImageUrl, Status, SoldCount)
 VALUES 
-(N'Trà sữa truyền thống', N'Trà sữa nguyên bản', NULL, 1, 'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-tra-sua-dep-ngon.jpeg', 'active', 1),
-(N'Trà sữa matcha', N'Trà sữa hương vị matcha', NULL, 1, 'https://cf.shopee.vn/file/115b108e80bd3d48179938d1248ac30b', 'active', 2),
-(N'Trà sữa khoai môn', N'Trà sữa vị khoai môn', NULL, 1, 'https://th.bing.com/th/id/OIP.WqrCdDU4dwF5q-Dz6D5M2QHaHa?rs=1&pid=ImgDetMain', 'active', 2),
-(N'Trà sữa socola', N'Trà sữa vị socola', NULL, 1, 'https://th.bing.com/th/id/OIP.l3isdgVDMi6k8rKCdXd02QHaHa?rs=1&pid=ImgDetMain', 'active', 1),
-(N'Trà sữa dâu', N'Trà sữa vị dâu', NULL, 1, 'https://png.pngtree.com/png-clipart/20210912/original/pngtree-strawberry-pearl-milk-tea-png-image_6742466.jpg', 'active', 2),
-(N'Trà sữa Thái xanh', N'Trà sữa Thái xanh có màu xanh đặc trưng, vị trà đậm và béo ngậy, kết hợp hoàn hảo giữa sữa và trà.', NULL, 1, 'https://phunuketnoi.com/wp-content/uploads/2021/11/tra-thai-xanh-45645544.jpg', 'active', 3),
+(N'Trà sữa truyền thống', N'Thức uống quốc dân, với vị trà đậm đà, vị sữa ngọt ngào, là lựa chọn hoàn hảo cho mọi lứa tuổi để giải khát và thư giãn.', NULL, 1, 'https://toigingiuvedep.vn/wp-content/uploads/2021/06/hinh-anh-tra-sua-dep-ngon.jpeg', 'active', 1),
+(N'Trà sữa matcha', N'Sự kết hợp tinh tế giữa trà xanh matcha Nhật Bản thanh mát và sữa béo ngậy, tạo nên thức uống thơm ngon, độc đáo.', NULL, 1, 'https://cf.shopee.vn/file/115b108e80bd3d48179938d1248ac30b', 'active', 2),
+(N'Trà sữa khoai môn', N'Vị khoai môn ngọt ngào, béo ngậy, thơm lừng, hòa quyện cùng trà sữa thanh mát, tạo nên một thức uống giải khát tuyệt vời, chinh phục mọi trái tim.', NULL, 1, 'https://th.bing.com/th/id/OIP.WqrCdDU4dwF5q-Dz6D5M2QHaHa?rs=1&pid=ImgDetMain', 'active', 2),
+(N'Trà sữa socola', N'Thức uống đầy quyến rũ với hương thơm socola nồng nàn và vị ngọt đắng cân bằng. Vị trà sữa dịu nhẹ hòa quyện cùng vị socola đậm đà, tạo nên một trải nghiệm vị giác độc đáo và khó quên.', NULL, 1, 'https://th.bing.com/th/id/OIP.l3isdgVDMi6k8rKCdXd02QHaHa?rs=1&pid=ImgDetMain', 'active', 1),
+(N'Trà sữa dâu', N'Thức uống ngọt ngào và tươi mát với hương dâu tây tự nhiên. Vị chua ngọt của dâu tây hòa quyện cùng trà sữa thơm ngon, tạo nên một trải nghiệm vị giác đầy thú vị.', NULL, 1, 'https://png.pngtree.com/png-clipart/20210912/original/pngtree-strawberry-pearl-milk-tea-png-image_6742466.jpg', 'active', 2),
+(N'Trà sữa Thái xanh', N' Thức uống độc đáo với hương vị trà Thái đặc trưng, thơm nồng và đậm đà. Vị trà xanh Thái Lan hòa quyện cùng sữa béo ngậy, tạo nên một trải nghiệm vị giác mới lạ và khó quên.', NULL, 1, 'https://phunuketnoi.com/wp-content/uploads/2021/11/tra-thai-xanh-45645544.jpg', 'active', 3),
 (N'Hồng trà tắc mật ong', N'Hồng trà kết hợp cùng vị chua nhẹ của tắc và độ ngọt thanh của mật ong, tạo nên thức uống giải khát tươi mát.', NULL, 1, 'https://blog.tiemphonui.com/wp-content/uploads/2022/05/tra-tac-mat-ong-giai-nhiet.jpg', 'active', 1),
 (N'Trà mãng cầu', N'Trà mãng cầu kết hợp giữa vị chua ngọt tự nhiên của mãng cầu với vị thanh mát của trà, mang lại cảm giác sảng khoái.', NULL, 1, 'https://th.bing.com/th/id/OIP.OeyB3Hr4As_Qk_PteLFt9gHaHa?rs=1&pid=ImgDetMain', 'active', 1),
 
