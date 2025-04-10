@@ -63,3 +63,28 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/*Replace 400px of bootstrap 5.1 offcanvas-end*/
+@media (min-width: 768px) {
+    .offcanvas {
+        width: 30% !important;
+    }
+}
+
+.toppings-scrollable::-webkit-scrollbar {
+    width: 10px; 
+    height: 10px;
+}
+
+.toppings-scrollable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.toppings-scrollable::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.toppings-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

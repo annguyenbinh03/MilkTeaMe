@@ -97,7 +97,7 @@
 											}
 										</div>
 									</div>
-									<button class="btn btn-success mt-3" onclick="addToCart(@item.Id, '@item.ImageUrl')"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
+									<button class="btn btn-success mt-3" onclick="addToCart(@item.Id, '@item.ImageUrl', '@item.Name')"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
 								</div>
 							</div>
 						</div>
@@ -132,7 +132,7 @@
 			});
 		});
 
-		function addToCart(productId, imageUrl) {
+		function addToCart(productId, imageUrl, name) {
 
 			var totalMoney = 0;
 			var cart = [];
@@ -165,6 +165,7 @@
 			const newCart = {
 				productId,
 				size,
+				name,
 				imageUrl,
 				quantity,
 				totalMoney,
