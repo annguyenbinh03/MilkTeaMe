@@ -4,7 +4,6 @@ using MilkTeaMe.Repositories.Implementations;
 using MilkTeaMe.Repositories.UnitOfWork;
 using MilkTeaMe.Services.Implementations;
 using MilkTeaMe.Services.Interfaces;
-using MilkTeaMe.Web.Infrastructure.ViewLocationExpanders;
 
 namespace MilkTeaMe.Web
 {
@@ -14,13 +13,10 @@ namespace MilkTeaMe.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-            builder.Services.AddControllersWithViews().AddRazorOptions(options =>{
-				options.ViewLocationExpanders.Add(new ManagerViewLocationExpander());
-				options.ViewLocationExpanders.Add(new CustomerViewLocationExpander()); 
-            });
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
 
-			builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
+            builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
 				 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 			builder.Services.AddScoped(typeof(GenericRepository<>));
@@ -58,15 +54,23 @@ namespace MilkTeaMe.Web
 
             app.UseAuthorization();
 
-			app.MapControllerRoute(
-				name: "Manager",
-				pattern: "Manager/{controller=Dashboard}/{action=Index}");
+            app.MapAreaControllerRoute(
+                name: "Manager",
+                areaName: "Manager",
+                pattern: "Manager/{controller=Dashboard}/{action=Index}");
 
-			app.MapControllerRoute(
-				name: "default",
-				pattern: "{controller=Home}/{action=Index}");
+            app.MapAreaControllerRoute(
+                name: "Customer",
+                areaName: "Customer",
+                pattern: "Customer/{controller=Home}/{action=Index}");
 
-			app.Run();
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}",
+                defaults: new { area = "Customer", controller = "Home", action = "Index" }
+            );
+
+            app.Run();
         }
     }
 }

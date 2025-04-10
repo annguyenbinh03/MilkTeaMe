@@ -9,8 +9,9 @@ using MilkTeaMe.Web.Models.Responses;
 using System.Drawing.Printing;
 using System.Text.Json;
 
-namespace MilkTeaMe.Web.Controllers.Customer
+namespace MilkTeaMe.Web.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
@@ -22,7 +23,7 @@ namespace MilkTeaMe.Web.Controllers.Customer
         public async Task<IActionResult> Index()
         {
             var (products, totalItems) = await _productService.GetMilkTeas(null, null, null);
-            var (toppings, totalTopping) = await _productService.GetToppings(null, null, null); 
+            var (toppings, totalTopping) = await _productService.GetToppings(null, null, null);
 
             ViewBag.Toppings = toppings;
             return View(products);

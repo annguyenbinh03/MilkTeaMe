@@ -27,7 +27,7 @@ namespace MilkTeaMe.Web.Controllers
                 CookieOptions cookieOptions = new CookieOptions();
                 cookieOptions.Expires = DateTime.Now.AddMinutes(30);
                 HttpContext.Response.Cookies.Append("Email", user.Username, cookieOptions);
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Dashboard", new { area = "Manager"});
             }
             else
             {

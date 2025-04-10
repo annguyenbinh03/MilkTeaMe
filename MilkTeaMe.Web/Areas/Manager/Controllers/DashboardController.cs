@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Services.Interfaces;
 
-namespace MilkTeaMe.Web.Controllers.Manager
+namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
-	[Route("api/dashboard")]
-	public class DashboardController : Controller
+    [Area("Manager")]
+    [Route("Manager/[controller]")]
+    public class DashboardController : Controller
     {
         private readonly IDashboardService _dashboardService;
 

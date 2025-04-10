@@ -77,7 +77,7 @@
 @section Scripts {
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-			fetch("/api/dashboard/sales-data")
+			fetch("/manager/dashboard/sales-data")
 				.then(response => response.json())
 				.then(data => {
 					var ctx = document.getElementById('salesChart').getContext('2d');

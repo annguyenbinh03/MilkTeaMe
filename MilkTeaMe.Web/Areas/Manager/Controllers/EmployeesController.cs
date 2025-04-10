@@ -9,8 +9,9 @@ using MilkTeaMe.Repositories.DbContexts;
 using MilkTeaMe.Repositories.Models;
 using MilkTeaMe.Services.Interfaces;
 
-namespace MilkTeaMe.Web.Controllers.Manager
+namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
+    [Area("Manager")]
     public class EmployeesController : Controller
     {
         private readonly IEmployeeService _employeeService;

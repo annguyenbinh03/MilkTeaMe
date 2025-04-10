@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Chi tiết đơn hàng (Từ localStorage)";
+}
+
+<h2>Chi tiết đơn hàng (Từ localStorage)</h2>
+
+<div id="orderDetailsContainer">
+    <p><strong>Mã đơn hàng:</strong> <span id="orderId"></span></p>
+    <p><strong>Tên khách hàng:</strong> <span id="customerName"></span></p>
+
+    <h4>Sản phẩm trong đơn hàng</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody id="orderItemsTableBody">
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            const orderData = localStorage.getItem("currentOrder");
+
+            if (orderData) {
+                const order = JSON.parse(orderData);
+
+                $("#orderId").text(order.orderId);
+                $("#customerName").text(order.customerName);
+
+                const orderItemsTableBody = $("#orderItemsTableBody");
+                order.orderItems.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.productName}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.price.toLocaleString()}</td>
+                            <td>${(item.quantity * item.price).toLocaleString()}</td>
+                        </tr>
+                    `;
+                    orderItemsTableBody.append(row);
+                });
+            } else {
+                $("#orderDetailsContainer").html("<p>Không tìm thấy thông tin đơn hàng trong localStorage.</p>");
+            }
+        });
+    </script>
+}

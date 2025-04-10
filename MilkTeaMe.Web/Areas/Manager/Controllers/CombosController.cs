@@ -14,8 +14,9 @@ using MilkTeaMe.Web.Models.Requests;
 using MilkTeaMe.Web.Models.Responses;
 using Newtonsoft.Json;
 
-namespace MilkTeaMe.Web.Controllers.Manager
+namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
+    [Area("Manager")]
     public class CombosController : Controller
     {
         private readonly IProductService _productService;
