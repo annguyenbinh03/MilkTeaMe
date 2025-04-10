@@ -1,164 +1,178 @@
 ﻿@model IEnumerable<MilkTeaMe.Repositories.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
-    ViewData["HeaderTitle"] = "Trà sữa";
-    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+	ViewData["Title"] = "Index";
+	ViewData["HeaderTitle"] = "Trà sữa";
+	Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <div class="container py-4">
-    <h2 class="mb-4 text-center">Danh sách sản phẩm</h2>
-    <div class="row row-cols-1 row-cols-sm-3 row-cols-md-5 g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col">
-                <div class="card h-100 border-0 shadow rounded-4">
-                    <img src="@item.ImageUrl" class="card-img-top rounded-top-4" style="height: 220px; object-fit: cover;" alt="@item.Name">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">@item.Name</h5>
-                        <p class="card-text text-muted description-truncate">@item.Description</p>
-                        <div class="mb-2">
-                            @foreach (var size in item.ProductSizes)
-                            {
-                                <div> @(((int)size.Price).ToString("N0")) VND</div>
-                                break;
-                            }
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white border-0 text-center">
-                        <button type="button"
-                                class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center mx-auto"
-                                style="width: 45px; height: 45px;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#productModal_@item.Id">
-                            <i class="bi bi-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="modal fade" id="productModal_@item.Id" tabindex="-1" aria-labelledby="productModalLabel_@item.Id" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content rounded-4">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="productModalLabel_@item.Id">@item.Name</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                            </div>
-                            <div class="modal-body d-flex flex-wrap p-4">
-                                <div class="col-md-5 text-center">
-                                    <img src="@item.ImageUrl" class="img-fluid rounded" alt="@item.Name" style="max-height: 550px; object-fit: contain;" />
-                                    <p class="text-muted mt-3">@item.Description</p>
-                                    <div class="mt-3 d-inline-flex align-items-center border rounded px-2 py-1" style="width: fit-content;">
-                                        <button type="button" class="btn btn-danger btn-sm px-3 fw-bold" onclick="updateQuantity(@item.Id, -1)">−</button>
-                                        <input type="number" id="quantity_@item.Id" name="quantity" value="1" min="1" class="form-control form-control-sm text-center mx-2" style="width: 60px;" readonly />
-                                        <button type="button" class="btn btn-success btn-sm px-3 fw-bold" onclick="updateQuantity(@item.Id, 1)">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 ps-md-4">
-                                    <div style="min-height:145px">
-                                        Chọn size
+	<h2 class="mb-4 text-center">Danh sách sản phẩm</h2>
+	<div class="row row-cols-1 row-cols-sm-3 row-cols-md-5 g-4">
+		@foreach (var item in Model)
+		{
+			<div class="col">
+				<div class="card h-100 border-0 shadow rounded-4">
+					<img src="@item.ImageUrl" class="card-img-top rounded-top-4" style="height: 220px; object-fit: cover;" alt="@item.Name">
+					<div class="card-body">
+						<h5 class="card-title fw-bold">@item.Name</h5>
+						<p class="card-text text-muted description-truncate">@item.Description</p>
+						<div class="mb-2">
+							@foreach (var size in item.ProductSizes)
+							{
+								<div> @(((int)size.Price).ToString("N0")) VND</div>
+								break;
+							}
+						</div>
+					</div>
+					<div class="card-footer bg-white border-0 text-center">
+						<button type="button"
+								class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center mx-auto"
+								style="width: 45px; height: 45px;"
+								data-bs-toggle="modal"
+								data-bs-target="#productModal_@item.Id">
+							<i class="bi bi-cart"></i>
+						</button>
+					</div>
+				</div>
+				<div class="modal fade" id="productModal_@item.Id" tabindex="-1" aria-labelledby="productModalLabel_@item.Id" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-lg">
+						<div class="modal-content rounded-4">
+							<div class="modal-header">
+								<h5 class="modal-title" id="productModalLabel_@item.Id">@item.Name</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+							</div>
+							<div class="modal-body d-flex flex-wrap p-4">
+								<div class="col-md-5 text-center">
+									<img src="@item.ImageUrl" class="img-fluid rounded" alt="@item.Name" style="max-height: 550px; object-fit: contain;" />
+									<p class="text-muted mt-3">@item.Description</p>
+									<div class="mt-3 d-inline-flex align-items-center border rounded px-2 py-1" style="width: fit-content;">
+										<button type="button" class="btn btn-danger btn-sm px-3 fw-bold" onclick="updateQuantity(@item.Id, -1)">−</button>
+										<input type="number" id="quantity_@item.Id" name="quantity" value="1" min="1" class="form-control form-control-sm text-center mx-2" style="width: 60px;" readonly />
+										<button type="button" class="btn btn-success btn-sm px-3 fw-bold" onclick="updateQuantity(@item.Id, 1)">+</button>
+									</div>
+								</div>
+								<div class="col-md-7 ps-md-4">
+									<div style="min-height:145px">
+										Chọn size
 
-                                        <div class="d-flex flex-column gap-1 px-2">
-                                            @foreach (var size in item.ProductSizes)
-                                            {
-                                                var inputId = $"size_{item.Id}_{size.Size.Name}";
-                                                <label class="size-option" for="@inputId" id="label_@inputId">
-                                                    <span>@size.Size.Name</span>
-                                                    <span>@(((int)size.Price).ToString("N0")) VND</span>
-                                                    <input type="radio"
-                                                           name="size_@item.Id"
-                                                           id="@inputId"
-                                                           value="@size.Size.Name"
-                                                    @(size == item.ProductSizes.First() ? "checked" : "")
-                                                           onchange="setActive('@item.Id', '@inputId')" />
-                                                </label>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <label class="fw-semibold mb-2">Chọn Toppings</label>
-                                        <div style="max-height: 220px; overflow-y: auto;" class="border rounded px-3 py-2 bg-light">
-                                            @if (ViewBag.Toppings != null)
-                                            {
-                                                foreach (var topping in ViewBag.Toppings)
-                                                {
-                                                    var toppingId = $"topping_{item.Id}_{topping.Id}";
-                                                    <div class="form-check mb-2 d-flex align-items-center">
-                                                        <input class="form-check-input me-2 mt-0" type="checkbox" value="@topping.Id" id="@toppingId" name="toppings_@item.Id" />
+										<div class="d-flex flex-column gap-1 px-2">
+											@foreach (var size in item.ProductSizes)
+											{
+												var inputId = $"size_{item.Id}_{size.Size.Name}";
+												<label class="size-option" for="@inputId" id="label_@inputId">
+													<span>@size.Size.Name</span>
+													<span>@(((int)size.Price).ToString("N0")) VND</span>
+													<input type="radio"
+														   name="size_@item.Id"
+														   id="@inputId"
+														   value="@size.Size.Name"
+														   data-price="@size.Price"
+													@(size == item.ProductSizes.First() ? "checked" : "")
+														   onchange="setActive('@item.Id', '@inputId')" />
+												</label>
+											}
+										</div>
+									</div>
+									<div class="mt-3">
+										<label class="fw-semibold mb-2">Chọn Toppings</label>
+										<div style="max-height: 220px; overflow-y: auto;" class="border rounded px-3 py-2 bg-light">
+											@if (ViewBag.Toppings != null)
+											{
+												foreach (var topping in ViewBag.Toppings)
+												{
+													var toppingId = $"topping_{item.Id}_{topping.Id}";
+													<div class="form-check mb-2 d-flex align-items-center">
+														<input class="form-check-input me-2 mt-0" type="checkbox" value="@topping.Id" id="@toppingId" data-price="@topping.Price" data-imageUrl="@topping.ImageUrl" data-name="@topping.Name" name="toppings_@item.Id" />
 
-                                                        <label class="form-check-label d-flex align-items-center w-100" for="@toppingId" style="cursor: pointer;">
-                                                            <img src="@topping.ImageUrl" alt="@topping.Name" width="40" height="40" class="rounded me-2" style="object-fit: cover;" />
-                                                            <div class="d-flex justify-content-between align-items-center w-100">
-                                                                <span>@topping.Name</span>
-                                                                <small class="text-muted">@(((int)topping.Price).ToString("N0")) VND</small>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-success mt-3" onclick="addToCart(@item.Id)"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
-                                </div>
-                            </div>
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+														<label class="form-check-label d-flex align-items-center w-100" for="@toppingId" style="cursor: pointer;">
+															<img src="@topping.ImageUrl" alt="@topping.Name" width="40" height="40" class="rounded me-2" style="object-fit: cover;" />
+															<div class="d-flex justify-content-between align-items-center w-100">
+																<span>@topping.Name</span>
+																<small class="text-muted">@(((int)topping.Price).ToString("N0")) VND</small>
+															</div>
+														</label>
+													</div>
+												}
+											}
+										</div>
+									</div>
+									<button class="btn btn-success mt-3" onclick="addToCart(@item.Id, '@item.ImageUrl')"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 </div>
 
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        function updateQuantity(productId, delta) {
-            const input = document.getElementById(`quantity_${productId}`);
-            let value = parseInt(input.value) || 1;
-            value = Math.max(1, value + delta);
-            input.value = value;
-        }
-        function setActive(productId, selectedId) {
-            document.querySelectorAll(`label[id^="label_size_${productId}_"]`).forEach(label => {
-                label.classList.remove("active");
-            });
-            document.getElementById(`label_${selectedId}`).classList.add("active");
-        }
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll('[type="radio"]:checked').forEach(r => {
-                r.dispatchEvent(new Event('change'));
-            });
-        });
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		function updateQuantity(productId, delta) {
+			const input = document.getElementById(`quantity_${productId}`);
+			let value = parseInt(input.value) || 1;
+			value = Math.max(1, value + delta);
+			input.value = value;
+		}
+		function setActive(productId, selectedId) {
+			document.querySelectorAll(`label[id^="label_size_${productId}_"]`).forEach(label => {
+				label.classList.remove("active");
+			});
+			document.getElementById(`label_${selectedId}`).classList.add("active");
+		}
+		document.addEventListener("DOMContentLoaded", () => {
+			document.querySelectorAll('[type="radio"]:checked').forEach(r => {
+				r.dispatchEvent(new Event('change'));
+			});
+		});
 
-        function addToCart(productId){
-            const quantity = parseInt(document.getElementById(`quantity_${productId}`).value);
-            const sizeInput = document.querySelector(`input[name="size_${productId}"]:checked`);
-            const size = sizeInput ? sizeInput.value : 'S';
+		function addToCart(productId, imageUrl) {
 
-            const toppingCheckboxes = document.querySelectorAll(`input[name="toppings_${productId}"]:checked`);
-            const toppings = Array.from(toppingCheckboxes).map(cb => parseInt(cb.value));
+			var totalMoney = 0;
+			var cart = [];
+			var localCart = localStorage.getItem("cart");
+			if (localCart !== null)
+				cart= JSON.parse(localCart);
 
-            const cartItem = {
-                productId,
-                size,
-                quantity,
-                toppings
-            };
+			const quantity = parseInt(document.getElementById(`quantity_${productId}`).value);
+			const productPrice = document.getElementById(`quantity_${productId}`).value;
+			const sizeInput = document.querySelector(`input[name="size_${productId}"]:checked`);
 
-            fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(cartItem)
-            }).then(res => {
-                if (res.ok) {
-                    alert("Đã thêm vào giỏ hàng!");
-                } else {
-                    alert("Thêm giỏ hàng thất bại!");
-                }
-            });
-        }
-    </script>
+			totalMoney += parseInt(sizeInput.dataset.price);
+
+			const size = sizeInput ? sizeInput.value : 'S';
+
+			const toppingCheckboxes = document.querySelectorAll(`input[name="toppings_${productId}"]:checked`);
+
+			var toppingItems = [];
+
+			const toppings = Array.from(toppingCheckboxes).forEach(cb => {
+				totalMoney += parseInt(cb.dataset.price);
+				var topping = {
+					Id: parseInt(cb.value),
+					Name: cb.dataset.name,
+					ImageUrl: cb.dataset.imageurl
+				}
+				toppingItems.push(topping);
+			});
+
+			const newCart = {
+				productId,
+				size,
+				imageUrl,
+				quantity,
+				totalMoney,
+				toppings: toppingItems
+			};
+			cart.push(newCart);
+			localStorage.setItem("cart", JSON.stringify(cart));
+			alert("Đã thêm vào giỏ hàng!");
+		}
+	</script>
 }
