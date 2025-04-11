@@ -46,7 +46,7 @@ function showCart() {
                         <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title">${item.name}(${item.size})</h5>     
-                              <button class="btn btn-sm btn-danger" onclick="removeCartItem(${index})">
+                              <button class="btn btn-sm btn-danger" onclick="removeCartItemFromOffcanvas(${index})">
                                   <i class="bi bi-trash"></i>
                               </button>
                             </div>
@@ -70,12 +70,18 @@ function showCart() {
     `;
 }
 
-function removeCartItem(index) {
+function removeCartItemFromOffcanvas(index) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
     toastr.success("Đã xóa sản phẩm khỏi đơn hàng");
     showCart();
+
+    if (window.location.pathname.toLowerCase().includes("/order")) {
+        if (typeof showCartPage === "function") {
+            showCartPage();
+        }
+    }
 }
 
 function proceedToOrderPage() {
