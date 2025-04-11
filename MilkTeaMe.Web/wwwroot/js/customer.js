@@ -88,7 +88,7 @@ function proceedToOrderPage() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     if (cart.length > 0) {
-        window.location.href = '/Orders';
+        window.location.href = '/Customer/Orders/Index';
     } else {
         toastr.error("Giỏ hàng đang rỗng");
     }

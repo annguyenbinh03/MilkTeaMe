@@ -105,11 +105,37 @@
 			container.innerHTML += `
 				<div class="d-flex justify-content-between align-items-center py-2">
 						<span class="fw-bold text-danger fs-5">Tổng giá trị đơn hàng: ${formatVND(totalPrice)}</span>
-						<button class="btn btn-success" onclick="proceedToPayment()">Đặt hàng</button>
+							<button class="btn btn-success" onclick="createOrder()">Đặt hàng</button>
 				</div>
 			`;
 		}
 
 		document.addEventListener("DOMContentLoaded", showCartPage);
+
+		function createOrder(){
+			const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+			let request = cart.map(item => ({
+				productId: item.productId,
+				size: item.size,
+				quantity: item.quantity,
+				toppings: item.toppings.map(t => t.Id)
+			}));
+
+			fetch("/customer/orders/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+					body: JSON.stringify(request)
+			}).then(res => {
+				if (res.redirected) {
+					console.log(res.url);
+				}
+			})
+			.catch(err => {
+				console.error("Lỗi khi gửi giỏ hàng:", err);
+			});
+		}
 	</script>
 }
