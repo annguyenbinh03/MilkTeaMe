@@ -65,7 +65,7 @@ function showCart() {
     container.innerHTML += `
         <div class="d-flex justify-content-between align-items-center py-2">
                 <span class="fw-bold text-danger fs-5">Tổng giá trị đơn hàng: ${formatVND(totalPrice)}</span>
-                <button class="btn btn-success">Đặt hàng</button>
+                <button class="btn btn-success" onclick="proceedToOrderPage()">Đặt hàng</button>
         </div>
     `;
 }
@@ -76,4 +76,14 @@ function removeCartItem(index) {
     localStorage.setItem("cart", JSON.stringify(cart));
     toastr.success("Đã xóa sản phẩm khỏi đơn hàng");
     showCart();
+}
+
+function proceedToOrderPage() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length > 0) {
+        window.location.href = '/Orders';
+    } else {
+        toastr.error("Giỏ hàng đang rỗng");
+    }
 }
