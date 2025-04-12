@@ -127,15 +127,18 @@
 				headers: {
 					"Content-Type": "application/json"
 				},
-					body: JSON.stringify(request)
-			}).then(res => {
-				if (res.redirected) {
-					console.log(res.url);
-				}
-			})
-			.catch(err => {
-				console.error("Lỗi khi gửi giỏ hàng:", err);
-			});
+				body: JSON.stringify(request)
+			}).then(res => res.json())
+				.then(data => {
+					if (data.redirectUrl) {
+						window.location.href = data.redirectUrl;
+					} else {
+						console.error("Không nhận được redirectUrl");
+					}
+				})
+				.catch(err => {
+					console.error("Lỗi khi gửi giỏ hàng:", err);
+				});
 		}
 	</script>
 }

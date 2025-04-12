@@ -11,10 +11,12 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 	public class OrdersController : Controller
 	{
 		private readonly IOrderService _orderService;
+		private readonly IVNPayService _vnPayService;
 
-		public OrdersController(IOrderService orderService)
+		public OrdersController(IOrderService orderService, IVNPayService vpnService)
 		{
 			_orderService = orderService;
+			_vnPayService = vpnService;
 		}
 
 		[HttpGet("")]
@@ -54,18 +56,30 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 					});
 				}
 
-				int id = await _orderService.Create(list);
-				Console.WriteLine(id);
-
+				int orderId = await _orderService.Create(list);
+				string redirectUrl = await _vnPayService.Charge(orderId);
+				return Ok(new { redirectUrl });
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.ToString());
 			}
-
-			return Redirect("google.com");
+			return View();
 		}
 
-
+		[HttpGet("confirm")]
+		public async Task<IActionResult> ConfirmPayment()
+		{
+			try
+			{
+				string redirectUrl = await _vnPayService.ConfirmPayment(Request);
+				return Redirect(redirectUrl);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			return View();
+		}
 	}
 }

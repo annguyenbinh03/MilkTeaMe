@@ -30,7 +30,8 @@ namespace MilkTeaMe.Web
 			builder.Services.AddScoped<IOrderService, OrderService>();
 			builder.Services.AddScoped<IDashboardService, DashboardService>();
 			builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<CloudinaryService>();
+			builder.Services.AddScoped<IVNPayService, VNPayService>();
+			builder.Services.AddScoped<CloudinaryService>();
 
             builder.Services.AddSession(options =>
             {
