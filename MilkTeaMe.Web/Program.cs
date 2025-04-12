@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using MilkTeaMe.Repositories.DbContexts;
 using MilkTeaMe.Repositories.Implementations;
 using MilkTeaMe.Repositories.UnitOfWork;
+using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Implementations;
 using MilkTeaMe.Services.Interfaces;
+using System.Configuration;
 
 namespace MilkTeaMe.Web
 {
@@ -18,6 +20,8 @@ namespace MilkTeaMe.Web
 
             builder.Services.AddDbContext<MilkTeaMeDBContext>(options =>
 				 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+			builder.Services.Configure<VNPaySettings>(builder.Configuration.GetSection("VNPaySettings"));
 
 			builder.Services.AddScoped(typeof(GenericRepository<>));
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
