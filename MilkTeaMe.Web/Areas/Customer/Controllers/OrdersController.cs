@@ -12,11 +12,13 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 	{
 		private readonly IOrderService _orderService;
 		private readonly IVNPayService _vnPayService;
+		private readonly IPaymentService _paymentService;
 
-		public OrdersController(IOrderService orderService, IVNPayService vpnService)
+		public OrdersController(IOrderService orderService, IVNPayService vpnService, IPaymentService paymentService)
 		{
 			_orderService = orderService;
 			_vnPayService = vpnService;
+			_paymentService = paymentService;
 		}
 
 		[HttpGet("")]
@@ -26,10 +28,19 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 			return View();
 		}
 
-		[HttpGet("Success")]
-		public IActionResult Success()
+		[HttpGet("Success/{id}")]
+		public async Task<IActionResult> Success(int id)
 		{
-			return View();
+			try
+			{
+				PaymentModel model = await _paymentService.GetPaymentInfo(id);
+				return View(model);
+			}
+			catch (Exception)
+			{
+				// TODO: fix this
+				throw;
+			}	
 		}
 
 		[HttpPost("create")]

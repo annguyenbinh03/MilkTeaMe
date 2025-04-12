@@ -1,7 +1,67 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MilkTeaMe.Services.BusinessObjects.PaymentModel
+
 @{
+	ViewData["Title"] = "Index";
+	ViewData["HeaderTitle"] = "Thanh toán";
+	Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<div>Thanh toán thành công</div>
+<div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height:80vh">
+    <div class="card shadow rounded-4" style="max-width: 500px; width: 100%;">
+        <div class="card-header bg-success text-white text-center fs-3 fw-bold py-4 fw-semibold">
+            🎉 Thanh toán thành công!
+        </div>
+        <div class="card-body px-4 py-3">
+            <div class="d-flex justify-content-between mb-2 fs-5">
+                <strong>Mã đơn hàng:</strong>
+                <span>@Model.OrderId</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 fs-5">
+                <strong>Số tiền:</strong>
+                <span id="formattedAmount">@Model.Amount</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 fs-5">
+                <strong>Mã giao dịch:</strong>
+                <span>@Model.TransactionCode</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 fs-5">
+                <strong>Trạng thái:</strong>
+                <span>
+                    @(Model.Status == "completed" ? "Thành công" :
+                        Model.Status == "fail" ? "Thất bại" : Model.Status)
+                </span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 fs-5">
+                <strong>Phương thức:</strong>
+                <span>
+                    @if (Model.MethodName?.ToLower() == "vnpay")
+                    {
+                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-VNPAY-QR-1.png" alt="VNPAY" style="height: 24px;" />
+                    }
+                    else
+                    {
+                        @Model.MethodName
+                    }
+                </span>
+            </div>
+            <div class="d-flex justify-content-between fs-5">
+                <strong>Thời gian:</strong>
+                <span>@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+        <div class="card-footer text-center bg-light py-3">
+            <a href="/" class="btn btn-primary px-4 fs-5">Quay về trang chủ</a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        window.onload = function () {
+            const amount = @Model.Amount; 
+            document.getElementById("formattedAmount").innerText = formatVND(amount); 
+        }
+        function formatVND(value) {
+            return value.toLocaleString('vi-VN') + 'đ';
+        }
+    </script>
+}
