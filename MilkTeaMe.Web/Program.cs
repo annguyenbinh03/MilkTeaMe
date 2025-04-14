@@ -46,7 +46,13 @@ namespace MilkTeaMe.Web
                      option.Cookie.SameSite = SameSiteMode.Lax;
                      option.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
-                 });
+                 })
+                .AddGoogle("Google", options =>
+                {
+                    options.ClientId = builder.Configuration["GoogleKeys:ClientId"];
+                    options.ClientSecret = builder.Configuration["GoogleKeys:ClientSecret"];
+                    options.CallbackPath = "/signin-google";
+                }); ;
 
             var app = builder.Build();
 

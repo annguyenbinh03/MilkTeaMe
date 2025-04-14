@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Repositories.Enums;
@@ -76,6 +77,58 @@ namespace MilkTeaMe.Web.Controllers
                 ModelState.AddModelError("", "Invalid username or password.");
             }
             return View(request);
+        }
+
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var redirectUrl = Url.Action("GoogleResponse", "Auth");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, "Google");
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities
+                .FirstOrDefault()?.Claims.Select(claim =>
+                    new
+                    {
+                        claim.Type,
+                        claim.Value
+                    });
+
+            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            var user = await _accountMemberService.GetOrCreateAccountByEmail(email);
+
+            var appClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var identity = new ClaimsIdentity(appClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                 new AuthenticationProperties
+                 {
+                     IsPersistent = true,
+                     ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+                 });
+
+
+            if (user.Role.Equals(UserRole.customer.ToString()))
+            {
+                return RedirectToAction("Index", "Home", new { area = "Customer" });
+            }
+            else if (user.Role.Equals(UserRole.manager.ToString()))
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
+            }
+
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
 
         public IActionResult Logout()

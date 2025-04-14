@@ -10,5 +10,6 @@ namespace MilkTeaMe.Services.Interfaces
     public interface IAuthService
     {
         Task<User?> Login(string username, string password);
+        Task<User> GetOrCreateAccountByEmail(string email);
     }
 }

@@ -69,8 +69,8 @@ CREATE TABLE [User] (
     Username NVARCHAR(50) NOT NULL,
     Password NVARCHAR(50) NULL,
     Role VARCHAR(10) CHECK (Role IN ('manager', 'staff', 'customer')),
-    Phone NVARCHAR(15) UNIQUE NOT NULL,
-    Email NVARCHAR(255) UNIQUE,
+    Phone NVARCHAR(15) UNIQUE NULL,
+    Email NVARCHAR(255) UNIQUE NULL,
     Status VARCHAR(10) CHECK (Status IN ('active', 'inactive', 'resigned')) DEFAULT 'active',
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE()
