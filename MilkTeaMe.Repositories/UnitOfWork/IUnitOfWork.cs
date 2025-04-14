@@ -12,7 +12,7 @@ namespace MilkTeaMe.Repositories.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<Category> CategoryRepository { get; }
-        IGenericRepository<Employee> EmployeeRepository { get; }
+        IGenericRepository<User> UserRepository { get; }
         IGenericRepository<Order> OrderRepository { get; }
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }

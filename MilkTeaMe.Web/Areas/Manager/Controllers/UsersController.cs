@@ -12,11 +12,11 @@ using MilkTeaMe.Services.Interfaces;
 namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    public class EmployeesController : Controller
+    public class UsersController : Controller
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly IUserService _employeeService;
 
-        public EmployeesController(IEmployeeService employeeService)
+        public UsersController(IUserService employeeService)
         {
             _employeeService = employeeService;
         }
@@ -39,14 +39,14 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Password,Role,Phone,Email,Status,CreatedAt,UpdatedAt")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Username,Password,Role,Phone,Email,Status,CreatedAt,UpdatedAt")] User user)
         {
             if (ModelState.IsValid)
             {
-                await _employeeService.Create(employee);
+                await _employeeService.Create(user);
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(user);
         }
 
         // GET: Employees/Edit/5
@@ -70,9 +70,9 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,Role,Phone,Email,Status,CreatedAt,UpdatedAt")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,Role,Phone,Email,Status,CreatedAt,UpdatedAt")] User user)
         {
-            if (id != employee.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -81,7 +81,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
             {
                 try
                 {
-                    await _employeeService.Update(employee);
+                    await _employeeService.Update(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -89,7 +89,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(user);
         }
 
         // GET: Employees/Delete/5

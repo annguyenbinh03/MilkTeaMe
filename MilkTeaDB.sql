@@ -64,11 +64,11 @@ CREATE TABLE ProductCombo (
 GO
 
 -- Bảng nhân viên
-CREATE TABLE Employee (
+CREATE TABLE [User] (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Username NVARCHAR(50) NOT NULL,
-    Password NVARCHAR(50) NOT NULL,
-    Role VARCHAR(10) CHECK (Role IN ('manager', 'staff', 'cashier')),
+    Password NVARCHAR(50) NULL,
+    Role VARCHAR(10) CHECK (Role IN ('manager', 'staff', 'customer')),
     Phone NVARCHAR(15) UNIQUE NOT NULL,
     Email NVARCHAR(255) UNIQUE,
     Status VARCHAR(10) CHECK (Status IN ('active', 'inactive', 'resigned')) DEFAULT 'active',
@@ -177,11 +177,12 @@ INSERT INTO ProductCombo (ComboId, ProductId, Quantity, ProductSizeId) VALUES
 (18, 3, 1, 8), (18, 5, 1, 14), (18, 6, 1, 17), (18, 12, 3, null);
 GO
 
--- Thêm dữ liệu mẫu vào bảng Employee
-INSERT INTO Employee (Username, Password, Role, Phone, Email, Status)
+-- Thêm dữ liệu mẫu vào bảng User
+INSERT INTO [User] (Username, Password, Role, Phone, Email, Status)
 VALUES 
-('manager', '12345678','manager','0901234567', 'admin1@example.com', 'active'),
-('staff', '12345678','staff','09012345678', 'staff@example.com', 'active');
+('manager', '1','manager','0901234567', 'admin1@example.com', 'active'),
+('staff', '1','staff','09012345678', 'staff@example.com', 'active'),
+('customer', '1','customer','09012345679', 'customer@example.com', 'active');
 GO
 
 INSERT INTO [Order] (TotalPrice, Status, CreatedAt, UpdatedAt) VALUES

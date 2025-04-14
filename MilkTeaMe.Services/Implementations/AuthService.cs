@@ -17,9 +17,9 @@ namespace MilkTeaMe.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Employee?> Login(string username, string password)
+        public async Task<User?> Login(string username, string password)
         {
-            return await _unitOfWork.EmployeeRepository.FindOneAsync(
+            return await _unitOfWork.UserRepository.FindOneAsync(
                     filter: ac => ac.Username == username && ac.Password == password);
         }
     }

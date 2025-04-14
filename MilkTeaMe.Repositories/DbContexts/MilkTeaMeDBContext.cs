@@ -9,18 +9,12 @@ namespace MilkTeaMe.Repositories.DbContexts;
 
 public partial class MilkTeaMeDBContext : DbContext
 {
-    public MilkTeaMeDBContext()
-    {
-    }
-
     public MilkTeaMeDBContext(DbContextOptions<MilkTeaMeDBContext> options)
         : base(options)
     {
     }
 
     public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -38,15 +32,17 @@ public partial class MilkTeaMeDBContext : DbContext
 
     public virtual DbSet<Size> Sizes { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07AD5E54E1");
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC077A888BA0");
 
             entity.ToTable("Category");
 
-            entity.HasIndex(e => e.Name, "UQ__Category__737584F6347D5EFF").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Category__737584F684DA7686").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -54,44 +50,9 @@ public partial class MilkTeaMeDBContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Employee>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Employee__3214EC07CC20A9A3");
-
-            entity.ToTable("Employee");
-
-            entity.HasIndex(e => e.Phone, "UQ__Employee__5C7E359E226E32A3").IsUnique();
-
-            entity.HasIndex(e => e.Email, "UQ__Employee__A9D1053458EC0E3B").IsUnique();
-
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(255);
-            entity.Property(e => e.Password)
-                .IsRequired()
-                .HasMaxLength(50);
-            entity.Property(e => e.Phone)
-                .IsRequired()
-                .HasMaxLength(15);
-            entity.Property(e => e.Role)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-            entity.Property(e => e.Status)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasDefaultValue("active");
-            entity.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Username)
-                .IsRequired()
-                .HasMaxLength(50);
-        });
-
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Order__3214EC07A13A81BA");
+            entity.HasKey(e => e.Id).HasName("PK__Order__3214EC07123612D9");
 
             entity.ToTable("Order");
 
@@ -110,7 +71,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__OrderDet__3214EC0797264A3A");
+            entity.HasKey(e => e.Id).HasName("PK__OrderDet__3214EC0719698EAA");
 
             entity.ToTable("OrderDetail");
 
@@ -138,7 +99,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Payment__3214EC078BBAED2F");
+            entity.HasKey(e => e.Id).HasName("PK__Payment__3214EC0733268CFD");
 
             entity.ToTable("Payment");
 
@@ -165,11 +126,11 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<PaymentMethod>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC0714988BB1");
+            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC078CC33219");
 
             entity.ToTable("PaymentMethod");
 
-            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F6A2217CC6").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F6BA9CF982").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -179,7 +140,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC073BA8618C");
+            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07C366D9A8");
 
             entity.ToTable("Product");
 
@@ -208,7 +169,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<ProductCombo>(entity =>
         {
-            entity.HasKey(e => new { e.ComboId, e.ProductId }).HasName("PK__ProductC__1602944255743F19");
+            entity.HasKey(e => new { e.ComboId, e.ProductId }).HasName("PK__ProductC__160294428CF047DE");
 
             entity.ToTable("ProductCombo");
 
@@ -229,11 +190,11 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<ProductSize>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductS__3214EC07C179BB33");
+            entity.HasKey(e => e.Id).HasName("PK__ProductS__3214EC074A63396E");
 
             entity.ToTable("ProductSize");
 
-            entity.HasIndex(e => new { e.ProductId, e.SizeId }, "UQ__ProductS__0C37165B66229D00").IsUnique();
+            entity.HasIndex(e => new { e.ProductId, e.SizeId }, "UQ__ProductS__0C37165B42BD5B6D").IsUnique();
 
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
 
@@ -248,16 +209,49 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Size>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Size__3214EC074BF1A608");
+            entity.HasKey(e => e.Id).HasName("PK__Size__3214EC07FB7E9AB6");
 
             entity.ToTable("Size");
 
-            entity.HasIndex(e => e.Name, "UQ__Size__737584F6CCD1F888").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Size__737584F65A587B95").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0743983846");
+
+            entity.ToTable("User");
+
+            entity.HasIndex(e => e.Phone, "UQ__User__5C7E359E2F67BDD3").IsUnique();
+
+            entity.HasIndex(e => e.Email, "UQ__User__A9D105347ECCB744").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.Phone)
+                .IsRequired()
+                .HasMaxLength(15);
+            entity.Property(e => e.Role)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Status)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValue("active");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Username)
+                .IsRequired()
+                .HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

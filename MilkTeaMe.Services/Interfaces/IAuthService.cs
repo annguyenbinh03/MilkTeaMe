@@ -9,6 +9,6 @@ namespace MilkTeaMe.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<Employee?> Login(string username, string password);
+        Task<User?> Login(string username, string password);
     }
 }

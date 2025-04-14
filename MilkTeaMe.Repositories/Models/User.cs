@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MilkTeaMe.Repositories.Models;
 
-public partial class Employee
+public partial class User
 {
     public int Id { get; set; }
 

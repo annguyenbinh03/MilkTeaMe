@@ -3,7 +3,7 @@
    "ContextClassName": "MilkTeaMeDBContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
-   "IncludeConnectionString": true,
+   "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": "DbContexts",
    "OutputPath": "Models",
@@ -16,10 +16,6 @@
    "Tables": [
       {
          "Name": "[dbo].[Category]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Employee]",
          "ObjectType": 0
       },
       {
@@ -52,6 +48,10 @@
       },
       {
          "Name": "[dbo].[Size]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[User]",
          "ObjectType": 0
       }
    ],
