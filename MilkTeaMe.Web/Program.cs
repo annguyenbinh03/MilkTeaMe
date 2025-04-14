@@ -7,6 +7,7 @@ using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Implementations;
 using MilkTeaMe.Services.Interfaces;
 using System.Configuration;
+using System.Security.Claims;
 
 namespace MilkTeaMe.Web
 {
@@ -62,21 +63,13 @@ namespace MilkTeaMe.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller}/{action}");
-
-            //app.MapAreaControllerRoute(
-            //    name: "Manager",
-            //    areaName: "Manager",
-            //    pattern: "Manager/{controller=Dashboard}/{action=Index}/{id?}");
-
-            //app.MapAreaControllerRoute(
-            //    name: "Customer",
-            //    areaName: "Customer",
-            //    pattern: "Customer/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

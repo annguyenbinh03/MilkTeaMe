@@ -18,6 +18,21 @@ namespace MilkTeaMe.Web.Controllers
         }
         public IActionResult Login()
         {
+            var user = HttpContext.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                string role = user.FindFirstValue(ClaimTypes.Role);
+
+                if (role == UserRole.manager.ToString())
+                {
+                    return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
+                }
+                else if (role == UserRole.customer.ToString())
+                {
+                    return RedirectToAction("Index", "Home", new { area = "Customer" });
+                }
+            }
             return View();
         }
         [HttpPost]
