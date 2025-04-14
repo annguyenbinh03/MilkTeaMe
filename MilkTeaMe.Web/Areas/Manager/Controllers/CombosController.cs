@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ using Newtonsoft.Json;
 namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Authorize(Roles = "manager")]
     public class CombosController : Controller
     {
         private readonly IProductService _productService;

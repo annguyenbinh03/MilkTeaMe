@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Implementations;
 using MilkTeaMe.Services.Interfaces;
@@ -7,6 +8,7 @@ using MilkTeaMe.Web.Models.Requests;
 namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Authorize(Roles = "manager")]
     public class MilkTeasController : Controller
     {
         private readonly IProductService _productService;

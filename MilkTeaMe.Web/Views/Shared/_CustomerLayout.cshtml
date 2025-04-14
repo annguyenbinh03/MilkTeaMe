@@ -30,9 +30,13 @@
                         </li>
                     </ul>
                 </div>
-                <button class="btn btn-outline-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" onclick="showCart()">
-                    <i class="bi bi-cart"></i> Giỏ hàng
-                </button>
+                <div class="d-flex">
+                    <button class="btn btn-outline-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" onclick="showCart()">
+                        <i class="bi bi-cart"></i> Giỏ hàng
+                    </button>
+                    <a asp-area="" asp-controller="Auth" asp-action="Logout" class="nav-link btn btn-danger text-dark">Đăng xuất</a>
+                </div>
+              
             </div>
         </nav>
     </header>

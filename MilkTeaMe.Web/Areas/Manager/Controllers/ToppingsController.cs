@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using MilkTeaMe.Web.Models.Requests;
 namespace MilkTeaMe.Web.Areas.Manager.Controllers
 {
     [Area("Manager")]
+    [Authorize(Roles = "manager")]
     public class ToppingsController : Controller
     {
         private readonly IProductService _productService;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Interfaces;
 using MilkTeaMe.Web.Models.Requests;
@@ -8,7 +9,8 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 {
 	[Area("Customer")]
 	[Route("Customer/[controller]")]
-	public class OrdersController : Controller
+    [Authorize(Roles = "customer")]
+    public class OrdersController : Controller
 	{
 		private readonly IOrderService _orderService;
 		private readonly IVNPayService _vnPayService;

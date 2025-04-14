@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using MilkTeaMe.Repositories.Enums;
 using MilkTeaMe.Services.Interfaces;
 using MilkTeaMe.Web.Models.Requests;
+using System.Security.Claims;
 
 namespace MilkTeaMe.Web.Controllers
 {
-	public class AuthController : Controller
-	{
+    public class AuthController : Controller
+    {
         private readonly IAuthService _accountMemberService;
 
         public AuthController(IAuthService accountMemberService)
@@ -24,10 +28,33 @@ namespace MilkTeaMe.Web.Controllers
 
             if (user != null)
             {
-                CookieOptions cookieOptions = new CookieOptions();
-                cookieOptions.Expires = DateTime.Now.AddMinutes(30);
-                HttpContext.Response.Cookies.Append("Email", user.Username, cookieOptions);
-                return RedirectToAction("Index", "Dashboard", new { area = "Manager"});
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = request.RememberMe,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+                    });
+
+                if (user.Role.Equals(UserRole.customer.ToString()))
+                {
+                    return RedirectToAction("Index", "Home", new { area = "Customer" });
+                } else if (user.Role.Equals(UserRole.manager.ToString()))
+                {
+                    return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
+                }
+
+                return RedirectToAction("Index", "Dashboard", new { area = "Manager" });
             }
             else
             {
@@ -38,8 +65,13 @@ namespace MilkTeaMe.Web.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Response.Cookies.Delete("Email");
+            HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Auth");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

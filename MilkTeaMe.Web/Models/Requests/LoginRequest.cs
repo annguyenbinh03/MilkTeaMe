@@ -11,5 +11,6 @@ namespace MilkTeaMe.Web.Models.Requests
         [DisplayName("Mật khẩu")]
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         public string Password { get; set; } = null!;
+        public bool RememberMe { get; set; } = false;
     }
 }
