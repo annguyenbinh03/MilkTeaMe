@@ -1,0 +1,40 @@
+﻿@model MilkTeaMe.Web.Models.Requests.RegisterRequest
+
+<form method="post" asp-action="Register" asp-controller="Auth">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<p class="text-center">or:</p>
+
+	<div class="form-outline mb-4">
+		<input asp-for="Username" id="registerName" class="form-control form-control-lg" placeholder="Nhập tên tài khoản" />
+		<span asp-validation-for="Username" class="text-danger"></span>
+	</div>
+
+	<div class="form-outline mb-4">
+		<input asp-for="Email" id="registerEmail" class="form-control form-control-lg" placeholder="Nhập email" />
+		<span asp-validation-for="Email" class="text-danger"></span>
+	</div>
+
+	<div class="form-outline mb-4">
+		<input type="password" asp-for="Password" id="registerPassword" class="form-control form-control-lg" placeholder="Nhập mật khẩu" />
+		<span asp-validation-for="Password" class="text-danger"></span>
+	</div>
+
+	<div class="form-outline mb-4">
+		<input type="password" asp-for="ConfirmPassword" id="registerRepeatPassword" class="form-control form-control-lg" placeholder="Nhập lại mật khẩu" />
+		<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+	</div>
+
+	<div class="form-check d-flex justify-content-center mb-4">
+		<input class="form-check-input me-2" type="checkbox" asp-for="AcceptTerms" id="registerCheck"
+			   aria-describedby="registerCheckHelpText" />
+		<label class="form-check-label" for="registerCheck">
+			Tôi đã đọc và chấp nhận điều khoản dịch vụ
+		</label>
+		<span asp-validation-for="AcceptTerms" class="text-danger"></span>
+	</div>
+
+	<div class="d-flex justify-content-center">
+		<button type="submit" class="btn btn-primary btn-block mb-4 w-50">Đăng ký</button>
+	</div>
+
+</form>

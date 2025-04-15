@@ -17,6 +17,20 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+#login-page .divider:after,
+#login-page .divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+#login-page .h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    #login-page .h-custom {
+        height: 100%;
+    }
 }
