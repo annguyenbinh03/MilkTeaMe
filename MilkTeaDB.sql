@@ -67,7 +67,7 @@ GO
 CREATE TABLE [User] (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Username NVARCHAR(50) NOT NULL,
-    Password NVARCHAR(50) NULL,
+    Password NVARCHAR(60) NULL,
     Role VARCHAR(10) CHECK (Role IN ('manager', 'staff', 'customer')),
     Phone NVARCHAR(15) NULL,
     Email NVARCHAR(255) NOT NULL,
@@ -180,9 +180,9 @@ GO
 -- Thêm dữ liệu mẫu vào bảng User
 INSERT INTO [User] (Username, Password, Role, Phone, Email, Status)
 VALUES 
-('manager', '1','manager','0901234567', 'admin1@example.com', 'active'),
-('staff', '1','staff','09012345678', 'staff@example.com', 'active'),
-('customer', '1','customer','09012345679', 'customer@example.com', 'active');
+('manager', '$2a$11$KyfRQthfLPrMKSaz/azCR.puWrYEl/ScyKbno83RYP1jw.lpSwNSO','manager','0901234567', 'admin1@example.com', 'active'),
+('staff', '$2a$11$KyfRQthfLPrMKSaz/azCR.puWrYEl/ScyKbno83RYP1jw.lpSwNSO','staff','09012345678', 'staff@example.com', 'active'),
+('customer', '$2a$11$KyfRQthfLPrMKSaz/azCR.puWrYEl/ScyKbno83RYP1jw.lpSwNSO','customer','09012345679', 'customer@example.com', 'active');
 GO
 
 INSERT INTO [Order] (TotalPrice, Status, CreatedAt, UpdatedAt) VALUES

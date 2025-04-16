@@ -44,11 +44,16 @@ namespace MilkTeaMe.Services.Implementations
             return user;
         }
 
-        public async Task<User?> Login(string username, string password)
-        {
-            return await _unitOfWork.UserRepository.FindOneAsync(
-                    filter: ac => ac.Username == username && ac.Password == password);
-        }
+		public async Task<User?> Login(string username, string password)
+		{
+			var user = await _unitOfWork.UserRepository
+				.FindOneAsync(u => u.Username == username);
+
+			if (user == null)
+				return null;
+
+			return BCrypt.Net.BCrypt.Verify(password, user.Password) ? user : null;
+		}
 
 		public async Task<User> Register(UserModel model)
 		{
@@ -69,7 +74,7 @@ namespace MilkTeaMe.Services.Implementations
 			User user = new User
             {
                 Username = model.Username,
-                Password = model.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
                 Role = UserRole.customer.ToString(),
                 Email = model.Email,
                 Status = UserStatus.active.ToString(),

@@ -21,6 +21,7 @@ namespace MilkTeaMe.Services.Implementations
 
 		public async Task Create(User request)
 		{
+			request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 			await _unitOfWork.UserRepository.InsertAsync(request);
 			await _unitOfWork.SaveChangesAsync();
 		}

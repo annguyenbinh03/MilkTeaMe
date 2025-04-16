@@ -75,7 +75,7 @@ namespace MilkTeaMe.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Invalid username or password.");
+                ModelState.AddModelError("Password", "Sai tài khoản hoặc mật khẩu.");
             }
 			ViewData["LoginModel"] = request;
 			return View(request);

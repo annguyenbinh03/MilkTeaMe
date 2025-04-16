@@ -1,8 +1,6 @@
 ﻿@model MilkTeaMe.Web.Models.Requests.RegisterRequest
 
 <form method="post" asp-action="Register" asp-controller="Auth">
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 	<div class="form-outline mb-4 mt-5">
 		<input asp-for="Username" id="registerName" class="form-control form-control-lg" placeholder="Nhập tên tài khoản" />
 		<span asp-validation-for="Username" class="text-danger"></span>
@@ -31,6 +29,7 @@
 		</label>
 		<span asp-validation-for="AcceptTerms" class="text-danger"></span>
 	</div>
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 	<div class="d-flex justify-content-center">
 		<button type="submit" class="btn btn-primary btn-block mb-4 w-50">Đăng ký</button>
