@@ -29,6 +29,14 @@ html {
     height: calc(100% - 73px);
 }
 
+#login-page .carousel-item {
+    transition: transform 3s ease, opacity 1s ease-out
+}
+
+#login-page #carouselExampleInterval {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 450px) {
     #login-page .h-custom {
         height: 100%;

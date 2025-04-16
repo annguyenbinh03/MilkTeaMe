@@ -2,9 +2,8 @@
 
 <form method="post" asp-action="Register" asp-controller="Auth">
 	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	<p class="text-center">or:</p>
 
-	<div class="form-outline mb-4">
+	<div class="form-outline mb-4 mt-5">
 		<input asp-for="Username" id="registerName" class="form-control form-control-lg" placeholder="Nhập tên tài khoản" />
 		<span asp-validation-for="Username" class="text-danger"></span>
 	</div>
