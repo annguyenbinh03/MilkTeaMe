@@ -37,15 +37,25 @@ namespace MilkTeaMe.Services.Implementations
 			}
 		}
 
-		public async Task<User?> GetEmployee(int id)
+		public async Task<User?> GetUser(int id)
 		{
 			return await _unitOfWork.UserRepository.GetByIdAsync(id);
 		}
 
-		public async Task<(IEnumerable<User>, int)> GetEmployees(string? search, int? page = null, int? pageSize = null)
+		public async Task<User?> GetUserByEmail(string email)
+		{
+			return await _unitOfWork.UserRepository.FindOneAsync(filter: u => u.Email == email);
+		}
+
+		public async Task<(IEnumerable<User>, int)> GetUsers(string? search, int? page = null, int? pageSize = null)
 		{
 			var (employees, totalItems) = await _unitOfWork.UserRepository.GetAsync(null, null, null);
 			return (employees, totalItems);
+		}
+
+		public Task ResetPasswordAsync(User user)
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task Update(User request)

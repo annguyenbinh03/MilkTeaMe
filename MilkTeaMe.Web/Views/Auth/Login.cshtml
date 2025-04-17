@@ -36,6 +36,9 @@
 					<li class="nav-item" role="presentation">
 						<button class="nav-link @(ViewBag.ActiveTab == "register" ? "active" : "")" id="pills-register-tab" data-bs-toggle="pill" data-bs-target="#pills-register" type="button" role="tab" aria-controls="pills-register" aria-selected="false">Đăng ký</button>
 					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link @(ViewBag.ActiveTab == "forgetPassword" ? "active" : "")" id="pills-forget-password-tab" data-bs-toggle="pill" data-bs-target="#pills-forget-password" type="button" role="tab" aria-controls="pills-forget-password" aria-selected="false">Quên mật khẩu</button>
+					</li>
 				</ul>
 				<div class="tab-content" id="pills-tabContent">
 					<div class="tab-pane fade @(ViewBag.ActiveTab == "login" || ViewBag.ActiveTab == null ? "show active" : "")" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
@@ -47,6 +50,9 @@
 					</div>
 					<div class="tab-pane fade @(ViewBag.ActiveTab == "register" ? "show active" : "")" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
 						@await Html.PartialAsync("_RegisterPartial", ViewData["RegisterModel"] ?? new RegisterRequest())
+					</div>
+					<div class="tab-pane fade @(ViewBag.ActiveTab == "forgetPassword" ? "show active" : "")" id="pills-forget-password" role="tabpanel" aria-labelledby="pills-forget-password-tab">
+						@await Html.PartialAsync("_ForgetPasswordPartial", ViewData["ForgetPasswordModel"] ?? new ForgetPasswordRequest())
 					</div>
 				</div>
 			</div>
@@ -79,11 +85,23 @@
 	}
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-			const btn = document.getElementById("switch-to-register");
-			btn.addEventListener("click", function () {
+			const registerBtn = document.getElementById("switch-to-register");
+			registerBtn.addEventListener("click", function () {
 				const tab = new bootstrap.Tab(document.querySelector('#pills-register-tab'));
 				tab.show();
 			});
 		});
+
+		toastr.options = {
+			"closeButton": true,
+			"progressBar": true,
+			"timeOut": "3000"
+			};
+		$(document).ready(function () {
+			var notification = '@ViewBag.Notification';
+			if (notification) {
+				toastr.success(notification);
+					}
+				});
 	</script>
 }
