@@ -70,10 +70,18 @@ CREATE TABLE [User] (
     Password NVARCHAR(60) NULL,
     Role VARCHAR(10) CHECK (Role IN ('manager', 'staff', 'customer')),
     Phone NVARCHAR(15) NULL,
-    Email NVARCHAR(255) NOT NULL,
+    Email NVARCHAR(50) NOT NULL,
     Status VARCHAR(10) CHECK (Status IN ('active', 'inactive', 'resigned')) DEFAULT 'active',
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE PasswordResetToken (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Email NVARCHAR(50) NOT NULL,
+    Token NVARCHAR(255) NOT NULL,
+    ExpiredAt DATETIME NOT NULL
 );
 GO
 

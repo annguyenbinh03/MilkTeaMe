@@ -24,8 +24,9 @@ namespace MilkTeaMe.Repositories.UnitOfWork
         private IGenericRepository<ProductCombo>? _productComboRepository;
         private IGenericRepository<ProductSize>? _productSizeRepository;
         private IGenericRepository<Size>? _sizeRepository;
+        private IGenericRepository<PasswordResetToken>? _passwordResetTokenRepository;
 
-        public IGenericRepository<Category> CategoryRepository
+		public IGenericRepository<Category> CategoryRepository
         {
             get
             {
@@ -149,7 +150,19 @@ namespace MilkTeaMe.Repositories.UnitOfWork
             }
         }
 
-        private bool disposed = false;
+		public IGenericRepository<PasswordResetToken> PasswordResetTokenRepository
+		{
+			get
+			{
+				if (this._passwordResetTokenRepository == null)
+				{
+					this._passwordResetTokenRepository = new GenericRepository<PasswordResetToken>(context);
+				}
+				return _passwordResetTokenRepository;
+			}
+		}
+
+		private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {

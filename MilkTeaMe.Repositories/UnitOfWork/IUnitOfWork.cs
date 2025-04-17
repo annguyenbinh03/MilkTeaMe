@@ -21,6 +21,7 @@ namespace MilkTeaMe.Repositories.UnitOfWork
         IGenericRepository<ProductCombo> ProductComboRepository { get; }
         IGenericRepository<ProductSize> ProductSizeRepository { get; }
         IGenericRepository<Size> SizeRepository { get; }
-        Task SaveChangesAsync();
+        IGenericRepository<PasswordResetToken> PasswordResetTokenRepository { get; }
+		Task SaveChangesAsync();
     }
 }
