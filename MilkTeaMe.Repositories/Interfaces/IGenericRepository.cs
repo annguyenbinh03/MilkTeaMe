@@ -22,5 +22,6 @@ namespace MilkTeaMe.Repositories.Interfaces
         Task InsertAsync(T entity);
         void Update(T entity);
         Task DeleteAsync(object id);
-    }
+        void DeleteAsync(T entity);
+	}
 }

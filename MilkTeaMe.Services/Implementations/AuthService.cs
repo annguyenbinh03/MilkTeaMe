@@ -94,7 +94,7 @@ namespace MilkTeaMe.Services.Implementations
 			var user = await _unitOfWork.UserRepository.FindOneAsync(filter: u => u.Email == email) ?? throw new UserNotFound();
 
 			var token = Guid.NewGuid().ToString();
-			var expiredAt = DateTime.UtcNow.AddMinutes(15);
+			var expiredAt = TimeZoneUtil.GetCurrentTime().AddMinutes(15);
 			await _unitOfWork.PasswordResetTokenRepository.InsertAsync(new PasswordResetToken
 			{
 				Email = email,
@@ -103,7 +103,7 @@ namespace MilkTeaMe.Services.Implementations
 			});
 			await _unitOfWork.SaveChangesAsync();
 
-			var resetLink = $"https://localhost:7119/Account/ResetPassword?token={token}&email={email}";
+			var resetLink = $"https://localhost:7119/Auth/ResetPassword?token={token}&email={email}";
 
 			var form = @"
                 <!DOCTYPE html>

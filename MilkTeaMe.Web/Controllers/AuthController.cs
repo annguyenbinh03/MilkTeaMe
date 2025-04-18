@@ -26,6 +26,11 @@ namespace MilkTeaMe.Web.Controllers
         }
         public IActionResult Login()
         {
+            if (TempData["Notification"] != null)
+            {
+                ViewBag.Notification = TempData["Notification"];
+            }
+
             var user = HttpContext.User;
 
             if (user.Identity.IsAuthenticated)
@@ -214,6 +219,52 @@ namespace MilkTeaMe.Web.Controllers
 			ViewBag.Notification = "Gửi yêu cầu thành công";
 			ViewBag.NotificationFull = "Gửi yêu cầu thành công, vui lòng kiểm tra email của bạn.";
 			return View("Login");
+		}
+
+		public async Task<IActionResult> ResetPassword(string token, string email)
+		{
+			var tokenEntry = await _resetPasswordService.FindOneAsync(email, token);
+
+			if (tokenEntry == null)
+			{
+				ModelState.AddModelError("", "Link không hợp lệ hoặc đã hết hạn.");
+				return View();
+			}
+			var model = new ResetPasswordRequest { Token = token, Email = email, NewPassword = string.Empty, ConfirmPassword = string.Empty };
+			return View(model);
+		}
+
+        [HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+		{
+			if (!ModelState.IsValid)
+				return View(request);
+
+			var tokenEntry = await _resetPasswordService.FindOneAsync(request.Email, request.Token);
+
+			if (tokenEntry == null)
+			{
+				ModelState.AddModelError("NewPassword", "Link không hợp lệ hoặc đã hết hạn.");
+				return View(request);
+			}
+
+			var user = await _userSerivce.GetUserByEmail(request.Email);
+
+			if (user == null)
+			{
+				ModelState.AddModelError("NewPassword", "Không tìm thấy người dùng với email: " + request.Email);
+				return View(request);
+			}
+
+			user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+			await _userSerivce.Update(user);
+
+			await _resetPasswordService.Delete(tokenEntry);
+
+            TempData["Notification"] = "Đổi mật khẩu thành công, vui lòng đăng nhập với mật khẩu bạn mới nhập.";
+
+            return RedirectToAction("Login");
 		}
 
 		public IActionResult Logout()

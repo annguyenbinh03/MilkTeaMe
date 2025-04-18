@@ -102,7 +102,12 @@ namespace MilkTeaMe.Repositories.Implementations
             }
         }
 
-        private string GetPropertyName<TProperty>(Expression<Func<T, TProperty>> expression)
+		public void DeleteAsync(T entity)
+		{
+			_dbSet.Remove(entity);
+		}
+
+		private string GetPropertyName<TProperty>(Expression<Func<T, TProperty>> expression)
         {
             if (expression.Body is MemberExpression memberExpression)
             {
@@ -114,6 +119,5 @@ namespace MilkTeaMe.Repositories.Implementations
             }
             throw new InvalidOperationException("Invalid expression format");
         }
-
-    }
+	}
 }
