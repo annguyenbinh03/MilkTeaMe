@@ -26,7 +26,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var (employee, totalItem) = await _employeeService.GetEmployees(null, null, null);
+            var (employee, totalItem) = await _employeeService.GetUsers(null, null, null);
             return View(employee);
         }
 
@@ -59,7 +59,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
                 return NotFound();
             }
 
-            var employee = await _employeeService.GetEmployee((int)id);
+            var employee = await _employeeService.GetUser((int)id);
             if (employee == null)
             {
                 return NotFound();
@@ -102,7 +102,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
                 return NotFound();
             }
 
-            var employee = await _employeeService.GetEmployee((int)id);
+            var employee = await _employeeService.GetUser((int)id);
             if (employee == null)
             {
                 return NotFound();
@@ -116,7 +116,7 @@ namespace MilkTeaMe.Web.Areas.Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _employeeService.GetEmployee(id);
+            var employee = await _employeeService.GetUser(id);
             if (employee != null)
             {
                 await _employeeService.Delete(id);

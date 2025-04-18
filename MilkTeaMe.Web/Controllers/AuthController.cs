@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MilkTeaMe.Repositories.Enums;
 using MilkTeaMe.Services.BusinessObjects;
@@ -13,11 +14,15 @@ namespace MilkTeaMe.Web.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IAuthService _accountMemberService;
+        private readonly IAuthService _authService;
+        private readonly IUserService _userSerivce;
+        private readonly IResetPasswordService _resetPasswordService;
 
-        public AuthController(IAuthService accountMemberService)
+		public AuthController(IAuthService accountMemberService, IUserService userService, IResetPasswordService resetPasswordService)
         {
-            _accountMemberService = accountMemberService;
+            _authService = accountMemberService;
+            _userSerivce = userService;
+            _resetPasswordService = resetPasswordService;
         }
         public IActionResult Login()
         {
@@ -41,7 +46,7 @@ namespace MilkTeaMe.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var user = await _accountMemberService.Login(request.Username, request.Password);
+            var user = await _authService.Login(request.Username, request.Password);
 
             if (user != null)
             {
@@ -102,7 +107,7 @@ namespace MilkTeaMe.Web.Controllers
 
             var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
 
-            var user = await _accountMemberService.GetOrCreateAccountByEmail(email);
+            var user = await _authService.GetOrCreateAccountByEmail(email);
 
             var appClaims = new List<Claim>
             {
@@ -147,7 +152,7 @@ namespace MilkTeaMe.Web.Controllers
                         Password = model.Password,
                         Email = model.Email
                     };
-                    var user = await _accountMemberService.Register(userModel);
+                    var user = await _authService.Register(userModel);
 
 					var claims = new List<Claim>
 				    {
@@ -178,14 +183,40 @@ namespace MilkTeaMe.Web.Controllers
 				}
 				catch (Exception ex)
                 {
-                    throw;
-                }	
+					ModelState.AddModelError("", ex.Message);
+				}	
 			}
 			ViewData["RegisterModel"] = model;
 			return View("Login");
 		}
 
-        public IActionResult Logout()
+        public IActionResult ForgetPassword()
+        {
+			ViewBag.ActiveTab = "forgetPassword";
+			return View("Login");
+		}
+
+        [HttpPost]
+		public async Task<IActionResult> ForgetPassword(ForgetPasswordRequest request)
+		{
+			ViewBag.ActiveTab = "forgetPassword";
+			ViewData["ForgetPasswordModel"] = request;
+			var user = await _userSerivce.GetUserByEmail(request.Email);
+
+			if (user == null)
+			{
+                ModelState.AddModelError("Email", "Không tìm thấy người dùng với email bạn cung cấp");
+				return View("Login");
+			}
+
+            await _authService.SendPasswordResetLink(request.Email);
+
+			ViewBag.Notification = "Gửi yêu cầu thành công";
+			ViewBag.NotificationFull = "Gửi yêu cầu thành công, vui lòng kiểm tra email của bạn.";
+			return View("Login");
+		}
+
+		public IActionResult Logout()
         {
             HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Auth");

@@ -34,6 +34,8 @@ namespace MilkTeaMe.Web
 			builder.Services.AddScoped<IAuthService, AuthService>();
 			builder.Services.AddScoped<IVNPayService, VNPayService>();
 			builder.Services.AddScoped<IPaymentService, PaymentService>();
+			builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
+			builder.Services.AddScoped<IEmailService, EmailService>();
 			builder.Services.AddScoped<CloudinaryService>();
 
              builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(

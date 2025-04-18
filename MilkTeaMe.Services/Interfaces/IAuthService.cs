@@ -13,5 +13,6 @@ namespace MilkTeaMe.Services.Interfaces
         Task<User?> Login(string username, string password);
         Task<User> GetOrCreateAccountByEmail(string email);
         Task<User> Register(UserModel model);
+        Task SendPasswordResetLink(string email);
 	}
 }
