@@ -64,6 +64,59 @@
     text-overflow: ellipsis;
 }
 
+header .search-box {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 25px;
+    padding: 8px 15px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+    width: 500px;
+}
+
+header .search-box i {
+    color: #aaa;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+header .search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+header .btn{
+    font-size: 20px;
+    padding: 3px 9px;
+}
+
+header .btn:focus {
+    box-shadow: none !important;
+}
+
+footer{
+    background: #343a40;
+}
+
+footer h5,
+footer h6 {
+    font-weight: 600;
+}
+
+footer i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+footer i:hover {
+    color: #ffc107;
+}
+
+
 /*Replace 400px of bootstrap 5.1 offcanvas-end*/
 @media (min-width: 768px) {
     .offcanvas {
