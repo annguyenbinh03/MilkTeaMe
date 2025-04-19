@@ -2,9 +2,14 @@
     ViewData["Title"] = "Truy cập bị từ chối";
 }
 
-<div class="alert alert-danger mt-4">
-    <h4 class="alert-heading">🚫 Truy cập bị từ chối</h4>
-    <p>Bạn không có quyền truy cập vào trang này.</p>
-    <hr>
-    <a href="/" class="btn btn-primary">Về trang đăng nhập</a>
+<div class="d-flex align-items-center justify-content-center" id="error-page">
+    <div class="error-container text-center p-4">
+        <h1 class="error-code mb-0">401</h1>
+        <h2 class="display-6 error-message mb-3">Truy cập bị từ chối</h2>
+        <p class="lead error-message mb-5">Bạn không có quyền truy cập vào trang này.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/" class="btn btn-glass px-4 py-2">Về trang chủ</a>
+            <a asp-area="" asp-controller="Auth" asp-action="Login" class="btn btn-glass px-4 py-2">Đăng nhập</a>
+        </div>
+    </div>
 </div>
