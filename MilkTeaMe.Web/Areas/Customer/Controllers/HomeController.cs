@@ -26,9 +26,9 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 
         [HttpGet("")]
         [HttpGet("Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search)
         {
-            var (products, totalItems) = await _productService.GetMilkTeas(null, null, null);
+            var (products, totalItems) = await _productService.GetMilkTeas(search, null, null);
             var (toppings, totalTopping) = await _productService.GetToppings(null, null, null);
 
             ViewBag.Toppings = toppings;

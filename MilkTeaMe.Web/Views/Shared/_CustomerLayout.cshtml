@@ -12,16 +12,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header class="sticky-top">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid d-flex justify-content-between align-items-center px-2">          
                 <div>
                     <img height="40" src="https://res.cloudinary.com/drp7eohjg/image/upload/v1745055788/logo_qnanbp.jpg" />
                 </div>
-               <div class="search-box">
-                    <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Tìm kiếm sản phẩm..." />
-                </div>
+                <form asp-action="Index" method="get">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" name="search" placeholder="Tìm kiếm sản phẩm..." />
+                    </div>
+                </form>
                 <div class="d-flex">
                     <button class="btn me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" onclick="showCart()">
                         <i class="bi bi-cart"></i>
