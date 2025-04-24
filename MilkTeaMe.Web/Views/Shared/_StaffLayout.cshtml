@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MilkTeaMe</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/staff-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="admin-sidebar">
+            <h3>Lucky Milk Tea</h3>
+            <ul>
+                <li><a asp-area="Staff" asp-controller="Orders"><i class="bi bi-receipt"></i>Quản lý đơn hàng</a></li>
+                <li><a asp-area="Staff" asp-controller="Payment"><i class="bi bi-receipt"></i>Quản lý thanh toán</a></li>
+            </ul>
+        </nav>
+        <div class="admin-content">
+            <div class="header d-flex justify-content-between align-items-center px-4">
+                <div class="fs-3 fw-bold">@ViewData["HeaderTitle"]</div>
+                <a asp-area="" asp-controller="Auth" asp-action="Logout" class="nav-link btn btn-danger text-dark">Đăng xuất</a>
+            </div>
+            <main>
+                @RenderBody()
+            </main>
+        </div>
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
