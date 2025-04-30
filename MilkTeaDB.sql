@@ -3,6 +3,7 @@ USE master;
 GO
 IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'MilkTeaMeDB')
 BEGIN
+    ALTER DATABASE MilkTeaMeDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
     DROP DATABASE MilkTeaMeDB;
 END
 GO
@@ -91,7 +92,9 @@ CREATE TABLE [Order] (
     TotalPrice DECIMAL(10,2) NOT NULL,
     Status VARCHAR(10) CHECK (Status IN ('pending', 'completed', 'cancelled')) DEFAULT 'pending',
     CreatedAt DATETIME DEFAULT GETDATE(),
-    UpdatedAt DATETIME DEFAULT GETDATE()
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+	UserId INT,
+	FOREIGN KEY (UserId) REFERENCES [User](Id) ON DELETE NO ACTION,
 );
 GO
 
@@ -193,14 +196,14 @@ VALUES
 ('customer', '$2a$11$KyfRQthfLPrMKSaz/azCR.puWrYEl/ScyKbno83RYP1jw.lpSwNSO','customer','09012345679', 'customer@example.com', 'active');
 GO
 
-INSERT INTO [Order] (TotalPrice, Status, CreatedAt, UpdatedAt) VALUES
-(63000, 'completed', GETDATE(), GETDATE()),  
-(75000, 'completed', DATEADD(DAY, -1, GETDATE()), DATEADD(DAY, -1, GETDATE())),  
-(82000, 'completed', DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, -2, GETDATE())),  
-(54000, 'completed', DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, -3, GETDATE())),  
-(98000, 'completed', DATEADD(DAY, -4, GETDATE()), DATEADD(DAY, -4, GETDATE())),  
-(72000, 'completed', DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, -5, GETDATE())),  
-(89000, 'completed', DATEADD(DAY, -6, GETDATE()), DATEADD(DAY, -6, GETDATE()));  
+INSERT INTO [Order] (TotalPrice, Status, CreatedAt, UpdatedAt, UserId) VALUES
+(63000, 'completed', GETDATE(), GETDATE(), 3),  
+(75000, 'completed', DATEADD(DAY, -1, GETDATE()), DATEADD(DAY, -1, GETDATE()), 3),  
+(82000, 'completed', DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, -2, GETDATE()), 3),  
+(54000, 'completed', DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, -3, GETDATE()), 3),  
+(98000, 'completed', DATEADD(DAY, -4, GETDATE()), DATEADD(DAY, -4, GETDATE()), 3),  
+(72000, 'completed', DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, -5, GETDATE()), 3),  
+(89000, 'completed', DATEADD(DAY, -6, GETDATE()), DATEADD(DAY, -6, GETDATE()), 3);  
 GO  
 
 INSERT INTO OrderDetail (OrderId, ProductId, Quantity, Price, SizeId, ParentId) VALUES
