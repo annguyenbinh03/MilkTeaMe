@@ -40,11 +40,11 @@ public partial class MilkTeaMeDBContext : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07356499AD");
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC0791712D5D");
 
             entity.ToTable("Category");
 
-            entity.HasIndex(e => e.Name, "UQ__Category__737584F64024BB18").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Category__737584F6E337E07F").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -54,7 +54,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Order__3214EC073DC488B6");
+            entity.HasKey(e => e.Id).HasName("PK__Order__3214EC070358BBBC");
 
             entity.ToTable("Order");
 
@@ -69,11 +69,15 @@ public partial class MilkTeaMeDBContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__Order__UserId__5CD6CB2B");
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__OrderDet__3214EC07634E5D0A");
+            entity.HasKey(e => e.Id).HasName("PK__OrderDet__3214EC078B7EC1AF");
 
             entity.ToTable("OrderDetail");
 
@@ -83,25 +87,25 @@ public partial class MilkTeaMeDBContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__OrderDeta__Order__5FB337D6");
+                .HasConstraintName("FK__OrderDeta__Order__60A75C0F");
 
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
-                .HasConstraintName("FK__OrderDeta__Paren__628FA481");
+                .HasConstraintName("FK__OrderDeta__Paren__6383C8BA");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__OrderDeta__Produ__60A75C0F");
+                .HasConstraintName("FK__OrderDeta__Produ__619B8048");
 
             entity.HasOne(d => d.Size).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.SizeId)
-                .HasConstraintName("FK__OrderDeta__SizeI__619B8048");
+                .HasConstraintName("FK__OrderDeta__SizeI__628FA481");
         });
 
         modelBuilder.Entity<PasswordResetToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Password__3214EC07884FFE58");
+            entity.HasKey(e => e.Id).HasName("PK__Password__3214EC07C4D76553");
 
             entity.ToTable("PasswordResetToken");
 
@@ -116,7 +120,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Payment__3214EC0700FD030E");
+            entity.HasKey(e => e.Id).HasName("PK__Payment__3214EC0798527892");
 
             entity.ToTable("Payment");
 
@@ -133,21 +137,21 @@ public partial class MilkTeaMeDBContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Payment__OrderId__6C190EBB");
+                .HasConstraintName("FK__Payment__OrderId__6D0D32F4");
 
             entity.HasOne(d => d.PaymentMethod).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.PaymentMethodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Payment__Payment__6D0D32F4");
+                .HasConstraintName("FK__Payment__Payment__6E01572D");
         });
 
         modelBuilder.Entity<PaymentMethod>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC07E3B0BDF3");
+            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC07A0D6D75A");
 
             entity.ToTable("PaymentMethod");
 
-            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F67E65AF18").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F6298650AF").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -157,7 +161,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC071B3A0BF0");
+            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07ABA2FB34");
 
             entity.ToTable("Product");
 
@@ -186,7 +190,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<ProductCombo>(entity =>
         {
-            entity.HasKey(e => new { e.ComboId, e.ProductId }).HasName("PK__ProductC__16029442A3C67A98");
+            entity.HasKey(e => new { e.ComboId, e.ProductId }).HasName("PK__ProductC__16029442F385AA86");
 
             entity.ToTable("ProductCombo");
 
@@ -207,11 +211,11 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<ProductSize>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductS__3214EC07F7CC88DA");
+            entity.HasKey(e => e.Id).HasName("PK__ProductS__3214EC07FDE7B13A");
 
             entity.ToTable("ProductSize");
 
-            entity.HasIndex(e => new { e.ProductId, e.SizeId }, "UQ__ProductS__0C37165BF1B5D588").IsUnique();
+            entity.HasIndex(e => new { e.ProductId, e.SizeId }, "UQ__ProductS__0C37165BC911A49C").IsUnique();
 
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
 
@@ -226,11 +230,11 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<Size>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Size__3214EC070B6A1DBB");
+            entity.HasKey(e => e.Id).HasName("PK__Size__3214EC073E5083BA");
 
             entity.ToTable("Size");
 
-            entity.HasIndex(e => e.Name, "UQ__Size__737584F612EE35C2").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Size__737584F63DCC92E9").IsUnique();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -240,7 +244,7 @@ public partial class MilkTeaMeDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0752A13512");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07172FB70D");
 
             entity.ToTable("User");
 

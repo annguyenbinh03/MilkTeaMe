@@ -16,7 +16,7 @@ namespace MilkTeaMe.Repositories.UnitOfWork
         private readonly DbContext _context = context;
         private IGenericRepository<Category>? _categoryRepository;
         private IGenericRepository<User>? _userRepository;
-        private IGenericRepository<Order>? _orderRepository;
+        private IOrderRepository? _orderRepository;
         private IGenericRepository<OrderDetail>? _orderDetailRepository;
         private IGenericRepository<Payment>? _paymentRepository;
         private IGenericRepository<PaymentMethod>? _paymentMethodRepository;
@@ -50,14 +50,14 @@ namespace MilkTeaMe.Repositories.UnitOfWork
             }
         }
 
-        public IGenericRepository<Order> OrderRepository
+        public IOrderRepository OrderRepository
         {
             get
             {
 
                 if (this._orderRepository == null)
                 {
-                    this._orderRepository = new GenericRepository<Order>(context);
+                    this._orderRepository = new OrderRepository(context);
                 }
                 return _orderRepository;
             }

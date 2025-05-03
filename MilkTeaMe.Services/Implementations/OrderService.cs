@@ -3,6 +3,7 @@ using MilkTeaMe.Repositories.Enums;
 using MilkTeaMe.Repositories.Models;
 using MilkTeaMe.Repositories.UnitOfWork;
 using MilkTeaMe.Services.BusinessObjects;
+using MilkTeaMe.Services.Exceptions;
 using MilkTeaMe.Services.Interfaces;
 using MilkTeaMe.Services.Utils;
 using System;
@@ -123,5 +124,23 @@ namespace MilkTeaMe.Services.Implementations
 			}
 			return (orders, totalItems);
 		}
+
+		public async Task<(IEnumerable<Order>, int)> GetUserOrderHistory(string email)
+		{
+			User user = await _unitOfWork.UserRepository.FindOneAsync(filter: u => u.Email == email) ?? throw new UserNotFound();
+
+			var (orders, totalItem) = await _unitOfWork.OrderRepository.GetOrderHistory(user);
+
+			//remove topping on the list (topping would be children in parent order detail)
+            foreach (var order in orders)
+            {
+                var allDetails = order.OrderDetails;
+                order.OrderDetails = allDetails
+                    .Where(d => d.ParentId == null)
+                    .ToList();
+            }
+
+			return (orders, totalItem);
+        }
 	}
 }

@@ -13,7 +13,7 @@ namespace MilkTeaMe.Repositories.UnitOfWork
     {
         IGenericRepository<Category> CategoryRepository { get; }
         IGenericRepository<User> UserRepository { get; }
-        IGenericRepository<Order> OrderRepository { get; }
+        IOrderRepository OrderRepository { get; }
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }
         IGenericRepository<PaymentMethod> PaymentMethodRepository { get; }

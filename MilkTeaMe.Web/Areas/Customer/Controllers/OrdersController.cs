@@ -4,6 +4,7 @@ using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Interfaces;
 using MilkTeaMe.Web.Models.Requests;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace MilkTeaMe.Web.Areas.Customer.Controllers
 {
@@ -30,7 +31,23 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 			return View();
 		}
 
-		[HttpGet("Success/{id}")]
+        [HttpGet("order-history")]
+        public async Task<IActionResult> OrderHistory()
+        {
+			string? email = User.FindFirstValue(ClaimTypes.Name);
+			if (email == null)
+			{
+				return RedirectToAction("Login", "Auth", new { area = "" });
+			}
+
+			var (orders, totalItem) = await _orderService.GetUserOrderHistory(email);
+
+			ViewBag.TotalItem = totalItem;
+
+			return View(orders);
+        }
+
+        [HttpGet("Success/{id}")]
 		public async Task<IActionResult> Success(int id)
 		{
 			try
