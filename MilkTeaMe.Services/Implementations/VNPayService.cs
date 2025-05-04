@@ -85,43 +85,28 @@ namespace MilkTeaMe.Services.Implementations
 
 			amount /= 100;
 
-			if (vnp_ResponseCode == "00")
-			{
-				var payment = new Payment
-				{
-					OrderId = orderId,
-					TransactionCode = vnpayTranId.ToString(),
-					CreatedAt = TimeZoneUtil.GetCurrentTime(),
-					Amount = amount,
-					PaymentMethodId = (int)PaymentMethodId.vnpay,
-					Status = PaymentStatus.completed.ToString(),
-				};
+            var payment = new Payment
+            {
+                OrderId = orderId,
+                TransactionCode = vnpayTranId.ToString(),
+                CreatedAt = TimeZoneUtil.GetCurrentTime(),
+                Amount = amount,
+                PaymentMethodId = (int)PaymentMethodId.vnpay,
+                Status = vnp_ResponseCode == "00" ? PaymentStatus.completed.ToString() : PaymentStatus.failed.ToString(),
+            };
 
-				var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId) ?? throw new Exception("Order not found with id:" + orderId);
+            await _unitOfWork.PaymentRepository.InsertAsync(payment);
 
-				await _unitOfWork.PaymentRepository.InsertAsync(payment);
-				order.Status = OrderStatus.completed.ToString();
+            if (vnp_ResponseCode == "00")
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId)
+                            ?? throw new Exception("Order not found with id:" + orderId);
+                order.Status = OrderStatus.completed.ToString();
+            }
 
-				await _unitOfWork.SaveChangesAsync();		
-			}
-			else
-			{
-				var payment = new Payment
-				{
-					OrderId = orderId,
-					TransactionCode = vnpayTranId.ToString(),
-					CreatedAt = TimeZoneUtil.GetCurrentTime(),
-					Amount = amount,
-					PaymentMethodId = (int)PaymentMethodId.vnpay,
-					Status = PaymentStatus.failed.ToString(),
-				};
-				await _unitOfWork.PaymentRepository.InsertAsync(payment);
-				await _unitOfWork.SaveChangesAsync();
-			}
+            await _unitOfWork.SaveChangesAsync();
 
-			string redirectURL = _vnPaySettings.RedirectUrl;
-
-			return redirectURL;
+            return _vnPaySettings.RedirectUrl + "/" + payment.Id;
 		}
 
 		public string CreatePaymentUrl(decimal amount, int orderId)
