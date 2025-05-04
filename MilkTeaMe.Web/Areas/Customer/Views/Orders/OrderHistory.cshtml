@@ -1,11 +1,12 @@
 ﻿@model List<MilkTeaMe.Repositories.Models.Order>
 @{
-	ViewData["Title"] = "Index";
-	ViewData["HeaderTitle"] = "Hóa đơn";
-	Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewData["Title"] = "Index";
+    ViewData["HeaderTitle"] = "Lịch sử mua hàng";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    int totalPages = (int)Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize);
+    int currentPage = ViewBag.CurrentPage;
+    string currentStatus = ViewBag.CurrentStatus;
 }
-
-<h2>Lịch sử đơn hàng</h2>
 
 @if (!Model.Any())
 {
@@ -13,9 +14,24 @@
 }
 else
 {
+    <ul class="nav nav-tabs order-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link @(currentStatus == "all" ? "active" : "")" href="@Url.Action("OrderHistory", new { status = "all" })">Tất cả</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(currentStatus == "pending" ? "active" : "")" href="@Url.Action("OrderHistory", new { status = "pending" })">Chờ giao hàng</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(currentStatus == "completed" ? "active" : "")" href="@Url.Action("OrderHistory", new { status = "completed" })">Hoàn thành</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(currentStatus == "cancelled" ? "active" : "")" href="@Url.Action("OrderHistory", new { status = "cancelled" })">Đã hủy</a>
+        </li>
+    </ul>
+
     @foreach (var order in Model)
     {
-        <div class="card mb-4 border shadow-sm">
+        <div class="card mb-4 border shadow-sm" data-status="all">
             <div class="card-header d-flex justify-content-between align-items-center bg-light">
                 <div>
                     <span class="badge bg-danger me-2">Yêu thích</span>
@@ -25,7 +41,7 @@ else
                 <span class="text-success fw-bold">HOÀN THÀNH</span>
             </div>
 
-            <div class="card-body">
+            <div class="card-body pb-0">
                 @foreach (var detail in order.OrderDetails.Where(d => d.ParentId == null))
                 {
                     var collapseId = $"topping-{order.Id}-{detail.Id}";
@@ -37,13 +53,16 @@ else
                             {
                                 <div class="text-muted">Phân loại: @detail.Size.Name</div>
                             }
-                            <div class="text-muted">x@detail.Quantity</div>
+                            <div class="text-muted">Số lượng: @detail.Quantity</div>
 
                             @if (detail.InverseParent?.Any() == true)
                             {
-                                <a class="text-primary small" data-bs-toggle="collapse" href="#@collapseId" role="button" aria-expanded="false">
-                                    + Hiển thị topping
-                                </a>
+                                <div class="bg-light text-center">
+                                    <span class="text-primary small toggle-topping" data-bs-toggle="collapse" href="#@collapseId" role="button" aria-expanded="false" data-target="#@collapseId" tabindex="-1">
+                                        Hiển thị topping <i class="bi bi-chevron-double-down"></i>
+                                    </span>
+                                 </div>
+                              
 
                                 <div class="collapse mt-2" id="@collapseId">
                                     @foreach (var child in detail.InverseParent)
@@ -78,4 +97,58 @@ else
             </div>
         </div>
     }
+}
+
+<div class="pagination justify-content-center">
+    @if (totalPages > 1)
+    {
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("OrderHistory", new { page = 1, currentStatus = currentStatus})">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("OrderHistory", new { page = currentPage - 1, currentStatus = currentStatus})">Previous</a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("OrderHistory", new { page = i, currentStatus = currentStatus})">@i</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("OrderHistory", new { page = currentPage + 1, currentStatus = currentStatus})">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("OrderHistory", new { page = totalPages, currentStatus = currentStatus})">Last</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.toggle-topping').each(function () {
+                var $toggle = $(this);
+                var targetId = $toggle.data('target');
+                var $icon = $toggle.find('i');
+
+                $(targetId).on('shown.bs.collapse', function () {
+                    $icon.removeClass('bi-chevron-double-down').addClass('bi-chevron-double-up');
+                });
+
+                $(targetId).on('hidden.bs.collapse', function () {
+                    $icon.removeClass('bi-chevron-double-up').addClass('bi-chevron-double-down');
+                });
+            });
+        });
+    </script>
 }

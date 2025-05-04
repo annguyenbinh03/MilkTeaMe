@@ -125,11 +125,18 @@ namespace MilkTeaMe.Services.Implementations
 			return (orders, totalItems);
 		}
 
-		public async Task<(IEnumerable<Order>, int)> GetUserOrderHistory(string email)
-		{
+		public async Task<(IEnumerable<Order>, int)> GetUserOrderHistory(string email, string? orderStatus, int? page = null, int? pageSize = null)
+        {
 			User user = await _unitOfWork.UserRepository.FindOneAsync(filter: u => u.Email == email) ?? throw new UserNotFound();
 
-			var (orders, totalItem) = await _unitOfWork.OrderRepository.GetOrderHistory(user);
+
+            OrderStatus? parsedStatus = null;
+            if (Enum.TryParse<OrderStatus>(orderStatus, true, out var tempStatus))
+            {
+                parsedStatus = tempStatus;
+            }
+
+            var (orders, totalItem) = await _unitOfWork.OrderRepository.GetOrderHistory(user, orderStatus: parsedStatus, page, pageSize);
 
 			//remove topping on the list (topping would be children in parent order detail)
             foreach (var order in orders)

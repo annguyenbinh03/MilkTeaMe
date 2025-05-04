@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MilkTeaMe.Repositories.Enums;
+using MilkTeaMe.Repositories.Models;
 using MilkTeaMe.Services.BusinessObjects;
 using MilkTeaMe.Services.Interfaces;
 using MilkTeaMe.Web.Models.Requests;
@@ -32,7 +34,7 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 		}
 
         [HttpGet("order-history")]
-        public async Task<IActionResult> OrderHistory()
+        public async Task<IActionResult> OrderHistory(string? status, int? page)
         {
 			string? email = User.FindFirstValue(ClaimTypes.Name);
 			if (email == null)
@@ -40,11 +42,28 @@ namespace MilkTeaMe.Web.Areas.Customer.Controllers
 				return RedirectToAction("Login", "Auth", new { area = "" });
 			}
 
-			var (orders, totalItem) = await _orderService.GetUserOrderHistory(email);
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
 
-			ViewBag.TotalItem = totalItem;
+            List<Order> orders = new List<Order>();
 
-			return View(orders);
+			try
+			{
+                var data = await _orderService.GetUserOrderHistory(email, status, pageNumber, pageSize);
+				orders = data.Item1.ToList();
+                ViewBag.TotalItems = data.Item2;
+            }
+			catch (Exception)
+			{
+				//TODO: user not found
+				throw;
+			}
+
+            ViewBag.CurrentStatus = status?.ToLower() ?? "all";
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+
+            return View(orders);
         }
 
         [HttpGet("Success/{id}")]

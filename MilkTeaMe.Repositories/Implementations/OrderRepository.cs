@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MilkTeaMe.Repositories.Enums;
 using MilkTeaMe.Repositories.Interfaces;
 using MilkTeaMe.Repositories.Models;
 using System;
@@ -16,7 +17,7 @@ namespace MilkTeaMe.Repositories.Implementations
         {
         }
 
-        public async Task<(IEnumerable<Order>, int)> GetOrderHistory(User user, int? page = null, int? pageSize = null)
+        public async Task<(IEnumerable<Order>, int)> GetOrderHistory(User user, OrderStatus? orderStatus, int? page = null, int? pageSize = null)
         {
             IQueryable<Order> query = _dbSet;
 
@@ -25,6 +26,11 @@ namespace MilkTeaMe.Repositories.Implementations
                             .ThenInclude(od => od.Product)
                         .Include(o => o.OrderDetails)
                             .ThenInclude(od => od.Size);
+
+            if (orderStatus != null)
+            {
+                query = query.Where(o => o.Status == orderStatus.ToString());
+            }
 
             int totalItems = await query.CountAsync();
 
