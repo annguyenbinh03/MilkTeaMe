@@ -1,0 +1,166 @@
+﻿@model List<MilkTeaMe.Repositories.Models.Order>
+@{
+    ViewData["Title"] = "Index";
+    ViewData["HeaderTitle"] = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_StaffLayout.cshtml";
+    int totalPages = (int)Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize);
+    int currentPage = ViewBag.CurrentPage;
+    string currentStatus = ViewBag.CurrentStatus;
+    string? search = ViewBag.Search;
+}
+
+<ul class="nav nav-tabs order-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link @(currentStatus == "all" ? "active" : "")" href="@Url.Action("Index", new { status = "all" })">Tất cả</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(currentStatus == "pending" ? "active" : "")" href="@Url.Action("Index", new { status = "pending" })">Chờ giao hàng</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(currentStatus == "completed" ? "active" : "")" href="@Url.Action("Index", new { status = "completed" })">Hoàn thành</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(currentStatus == "cancelled" ? "active" : "")" href="@Url.Action("Index", new { status = "cancelled" })">Đã hủy</a>
+    </li>
+</ul>
+
+@if (!Model.Any())
+{
+    <p>Không có đơn hàng nào.</p>
+}
+else
+{
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <button type="submit" class="btn btn-primary input-group-text px-3"> <i class="bi bi-search"></i></button>
+            <input type="text" name="search" class="form-control" placeholder="Tìm đơn hàng theo id, email hoặc tên người dùng..." value="@search" />
+            <input type="hidden" name="status" value="@ViewBag.CurrentStatus" />
+          
+        </div>
+    </form>
+    @foreach (var order in Model)
+    {
+        <div class="card mb-4 border shadow-sm" data-status="all">
+            <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                <div>
+                    <span class="badge bg-danger me-2">Yêu thích</span>
+                    <strong class="me-2">Đơn hàng #@order.Id</strong>
+                    <span class="text-muted">@order.CreatedAt?.ToString("dd/MM/yyyy")</span>
+                </div>
+                <span class="text-success fw-bold">HOÀN THÀNH</span>
+            </div>
+
+            <div class="card-body pb-0">
+                @foreach (var detail in order.OrderDetails.Where(d => d.ParentId == null))
+                {
+                    var collapseId = $"topping-{order.Id}-{detail.Id}";
+                    <div class="d-flex mb-3 border-bottom pb-3">
+                        <img src="@detail.Product.ImageUrl" width="80" height="80" class="me-3 rounded">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">@detail.Product.Name</div>
+                            @if (detail.Size != null)
+                            {
+                                <div class="text-muted">Phân loại: @detail.Size.Name</div>
+                            }
+                            <div class="text-muted">Số lượng: @detail.Quantity</div>
+
+                            @if (detail.InverseParent?.Any() == true)
+                            {
+                                <div class="bg-light text-center">
+                                    <span class="text-primary small toggle-topping" data-bs-toggle="collapse" href="#@collapseId" role="button" aria-expanded="false" data-target="#@collapseId" tabindex="-1">
+                                        Hiển thị topping <i class="bi bi-chevron-double-down"></i>
+                                    </span>
+                                </div>
+
+
+                                <div class="collapse mt-2" id="@collapseId">
+                                    @foreach (var child in detail.InverseParent)
+                                    {
+                                        <div class="d-flex mt-2 ms-4">
+                                            <img src="@child.Product.ImageUrl" width="50" height="50" class="me-2 rounded">
+                                            <div class="flex-grow-1">
+                                                <div class="text-muted">↳ @child.Product.Name</div>
+                                                <div class="text-muted">x @child.Quantity</div>
+                                            </div>
+                                            <div class="text-end text-danger">
+                                                @String.Format("{0:N0} đ", child.Price * child.Quantity)
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="text-end text-danger fw-bold">
+                            @String.Format("{0:N0} đ", detail.Price * detail.Quantity)
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="card-footer d-flex justify-content-between align-items-center bg-light">
+                <div class="fw-bold">Thành tiền: <span class="text-danger">@String.Format("{0:N0} đ", order.TotalPrice)</span></div>
+                <div>
+                    <a href="#" class="btn btn-outline-secondary btn-sm">Yêu Cầu Trả Hàng</a>
+                    <a href="#" class="btn btn-danger btn-sm">Đánh Giá</a>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+
+
+<div class="pagination justify-content-center">
+    @if (totalPages > 1)
+    {
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = 1, currentStatus = currentStatus})">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1, currentStatus = currentStatus})">Previous</a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, currentStatus = currentStatus})">@i</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1, currentStatus = currentStatus})">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = totalPages, currentStatus = currentStatus})">Last</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.toggle-topping').each(function () {
+                var $toggle = $(this);
+                var targetId = $toggle.data('target');
+                var $icon = $toggle.find('i');
+
+                $(targetId).on('shown.bs.collapse', function () {
+                    $icon.removeClass('bi-chevron-double-down').addClass('bi-chevron-double-up');
+                });
+
+                $(targetId).on('hidden.bs.collapse', function () {
+                    $icon.removeClass('bi-chevron-double-up').addClass('bi-chevron-double-down');
+                });
+            });
+        });
+    </script>
+}

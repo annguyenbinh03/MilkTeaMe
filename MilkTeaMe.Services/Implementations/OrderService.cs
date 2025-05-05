@@ -106,8 +106,7 @@ namespace MilkTeaMe.Services.Implementations
 			return order.Id;
 		}
 
-
-		public async Task<(IEnumerable<Order>, int)> GetOrders(string? search, int? page = null, int? pageSize = null)
+        public async Task<(IEnumerable<Order>, int)> GetOrders(string? search, int? page = null, int? pageSize = null)
 		{
 			var (orders, totalItems) = await _unitOfWork.OrderRepository.GetAsync(page: page, pageSize: pageSize, includes: o => o.OrderDetails, orderBy: o => o.OrderByDescending(order => order.CreatedAt));
 
@@ -129,14 +128,13 @@ namespace MilkTeaMe.Services.Implementations
         {
 			User user = await _unitOfWork.UserRepository.FindOneAsync(filter: u => u.Email == email) ?? throw new UserNotFound();
 
-
             OrderStatus? parsedStatus = null;
             if (Enum.TryParse<OrderStatus>(orderStatus, true, out var tempStatus))
             {
                 parsedStatus = tempStatus;
             }
 
-            var (orders, totalItem) = await _unitOfWork.OrderRepository.GetOrderHistory(user, orderStatus: parsedStatus, page, pageSize);
+            var (orders, totalItem) = await _unitOfWork.OrderRepository.GetUserOrderHistory(user, orderStatus: parsedStatus, page, pageSize);
 
 			//remove topping on the list (topping would be children in parent order detail)
             foreach (var order in orders)
@@ -149,5 +147,16 @@ namespace MilkTeaMe.Services.Implementations
 
 			return (orders, totalItem);
         }
-	}
+
+        public async Task<(IEnumerable<Order>, int)> GetOrderHistory(string? search, string? orderStatus, int? page = null, int? pageSize = null)
+        {
+            OrderStatus? parsedStatus = null;
+            if (Enum.TryParse<OrderStatus>(orderStatus, true, out var tempStatus))
+            {
+                parsedStatus = tempStatus;
+            }
+
+            return await _unitOfWork.OrderRepository.GetOrderHistory(search, orderStatus: parsedStatus, page, pageSize);
+        }
+    }
 }

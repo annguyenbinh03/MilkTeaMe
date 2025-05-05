@@ -18,5 +18,7 @@ namespace MilkTeaMe.Services.Interfaces
 		/// <returns></returns>
 		Task<int> Create(List<CartItemModel> cardItems);
         Task<(IEnumerable<Order>, int)> GetUserOrderHistory(string email, string? orderStatus, int? page = null, int? pageSize = null);
-	}
+        Task<(IEnumerable<Order>, int)> GetOrderHistory(string? search, string? orderStatus, int? page = null, int? pageSize = null);
+
+    }
 }

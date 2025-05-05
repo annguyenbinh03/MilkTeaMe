@@ -10,6 +10,7 @@ namespace MilkTeaMe.Repositories.Interfaces
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
-        Task<(IEnumerable<Order>, int)> GetOrderHistory(User user, OrderStatus? orderStatus , int? page = null, int? pageSize = null);
+        Task<(IEnumerable<Order>, int)> GetUserOrderHistory(User user, OrderStatus? orderStatus , int? page = null, int? pageSize = null);
+        Task<(IEnumerable<Order>, int)> GetOrderHistory(string? search, OrderStatus? orderStatus , int? page = null, int? pageSize = null);
     }
 }
